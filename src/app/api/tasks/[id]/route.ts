@@ -49,7 +49,6 @@ export async function GET(
       { status: 200 }
     )
   } catch (error) {
-    console.error('Get task error:', error)
     return NextResponse.json(
       {
         success: false,
@@ -125,7 +124,6 @@ export async function PUT(
       { status: 200 }
     )
   } catch (error) {
-    console.error('Update task error:', error)
     return NextResponse.json(
       {
         success: false,
@@ -194,7 +192,6 @@ export async function DELETE(
       { status: 200 }
     )
   } catch (error) {
-    console.error('Delete task error:', error)
     return NextResponse.json(
       {
         success: false,

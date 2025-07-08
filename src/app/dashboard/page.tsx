@@ -48,7 +48,6 @@ export default function DashboardPage() {
       setUser(parsedUser)
       fetchTasks(token)
     } catch (error) {
-      console.error('Error parsing user data:', error)
       router.push('/login')
     }
   }, [router])
@@ -69,7 +68,6 @@ export default function DashboardPage() {
         toast.error(result.message || 'Failed to fetch tasks')
       }
     } catch (error) {
-      console.error('Error fetching tasks:', error)
       toast.error('Failed to fetch tasks')
     } finally {
       setIsLoading(false)
@@ -101,7 +99,6 @@ export default function DashboardPage() {
         toast.error(result.message || 'Failed to create task')
       }
     } catch (error) {
-      console.error('Error creating task:', error)
       toast.error('Failed to create task')
     } finally {
       setIsCreating(false)
@@ -132,7 +129,6 @@ export default function DashboardPage() {
         toast.error(result.message || 'Failed to update task')
       }
     } catch (error) {
-      console.error('Error updating task:', error)
       toast.error('Failed to update task')
     }
   }
@@ -159,7 +155,6 @@ export default function DashboardPage() {
         toast.error(result.message || 'Failed to delete task')
       }
     } catch (error) {
-      console.error('Error deleting task:', error)
       toast.error('Failed to delete task')
     }
   }

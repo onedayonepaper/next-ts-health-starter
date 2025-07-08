@@ -44,7 +44,6 @@ export default function RegisterPage() {
         toast.error(result.message || 'Registration failed')
       }
     } catch (error) {
-      console.error('Registration error:', error)
       toast.error('An error occurred during registration')
     } finally {
       setIsLoading(false)

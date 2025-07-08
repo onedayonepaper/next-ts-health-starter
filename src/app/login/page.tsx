@@ -44,7 +44,6 @@ export default function LoginPage() {
         toast.error(result.message || 'Login failed')
       }
     } catch (error) {
-      console.error('Login error:', error)
       toast.error('An error occurred during login')
     } finally {
       setIsLoading(false)
@@ -103,7 +102,7 @@ export default function LoginPage() {
 
         <div className="mt-6 text-center">
           <p className="text-gray-600">
-            Don't have an account?{' '}
+            Don&apos;t have an account?{' '}
             <Link href="/register" className="text-blue-600 hover:text-blue-700 font-medium">
               Sign up
             </Link>
