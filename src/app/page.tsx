@@ -322,6 +322,7 @@ export default function Home() {
   const [selectedHealthRating, setSelectedHealthRating] = useState(0)
   const [maxCookingTime, setMaxCookingTime] = useState(60)
   const [maxCalories, setMaxCalories] = useState(1000)
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false)
 
   const filteredRecipes = useMemo(() => {
     return recipes.filter(recipe => {
@@ -350,6 +351,11 @@ export default function Home() {
     return "⭐".repeat(rating)
   }
 
+  const handleApiCall = async () => {
+    alert('레시피 API를 호출합니다!')
+    // 여기에 실제 API 호출 로직을 추가할 수 있습니다
+  }
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100">
       <div className="container mx-auto px-4 py-16">
@@ -362,139 +368,175 @@ export default function Home() {
                 식단 레시피
               </span>
             </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              맛있고 건강한 레시피로 당신의 라이프스타일을 변화시켜보세요. 
-              영양 가득한 요리들로 건강한 하루를 시작하세요.
-            </p>
+            <div className="flex gap-4 justify-center">
+              <button
+                onClick={handleApiCall}
+                className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-medium transition-colors shadow-lg"
+              >
+                📱 레시피 API 호출
+              </button>
+              <button
+                onClick={() => setIsSearchModalOpen(true)}
+                className="bg-white hover:bg-gray-50 text-gray-700 px-4 py-3 rounded-lg border border-gray-300 transition-colors shadow-lg"
+              >
+                🔍 레시피 검색
+              </button>
+            </div>
           </div>
 
-          {/* Search and Filter Section */}
-          <div className="bg-white rounded-xl p-6 shadow-lg mb-8">
-            {/* Search Bar */}
-            <div className="mb-6">
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="레시피 이름이나 설명을 검색하세요..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                />
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
+          {/* Search Modal */}
+          {isSearchModalOpen && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+              <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                <div className="p-6">
+                  <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-2xl font-bold text-gray-900">레시피 검색 및 필터</h2>
+                    <button
+                      onClick={() => setIsSearchModalOpen(false)}
+                      className="text-gray-500 hover:text-gray-700"
+                    >
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+
+                  {/* Search Bar */}
+                  <div className="mb-6">
+                    <div className="relative">
+                      <input
+                        type="text"
+                        placeholder="레시피 이름이나 설명을 검색하세요..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      />
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Filter Buttons */}
+                  <div className="space-y-4">
+                    {/* Difficulty Filter */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">난이도</label>
+                      <div className="flex flex-wrap gap-2">
+                        {["전체", "초급", "중급", "고급"].map((difficulty) => (
+                          <button
+                            key={difficulty}
+                            onClick={() => setSelectedDifficulty(difficulty)}
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                              selectedDifficulty === difficulty
+                                ? "bg-green-600 text-white"
+                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                            }`}
+                          >
+                            {difficulty}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Category Filter */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">카테고리</label>
+                      <div className="flex flex-wrap gap-2">
+                        {["전체", "아침", "점심", "저녁", "간식", "브런치", "다이어트", "운동후"].map((category) => (
+                          <button
+                            key={category}
+                            onClick={() => setSelectedCategory(category)}
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                              selectedCategory === category
+                                ? "bg-blue-600 text-white"
+                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                            }`}
+                          >
+                            {category}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Health Rating Filter */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">건강지수 (최소)</label>
+                      <div className="flex gap-2">
+                        {[0, 3, 4, 5].map((rating) => (
+                          <button
+                            key={rating}
+                            onClick={() => setSelectedHealthRating(rating)}
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                              selectedHealthRating === rating
+                                ? "bg-yellow-600 text-white"
+                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                            }`}
+                          >
+                            {rating === 0 ? "전체" : `${renderStars(rating)} 이상`}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Time and Calorie Filters */}
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          조리시간 (최대 {maxCookingTime}분)
+                        </label>
+                        <input
+                          type="range"
+                          min="5"
+                          max="60"
+                          value={maxCookingTime}
+                          onChange={(e) => setMaxCookingTime(Number(e.target.value))}
+                          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          칼로리 (최대 {maxCalories}kcal)
+                        </label>
+                        <input
+                          type="range"
+                          min="200"
+                          max="1000"
+                          step="50"
+                          value={maxCalories}
+                          onChange={(e) => setMaxCalories(Number(e.target.value))}
+                          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Reset Button */}
+                    <div className="flex justify-between items-center pt-4 border-t">
+                      <p className="text-sm text-gray-600">
+                        {filteredRecipes.length}개의 레시피가 검색되었습니다.
+                      </p>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={resetFilters}
+                          className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                        >
+                          필터 초기화
+                        </button>
+                        <button
+                          onClick={() => setIsSearchModalOpen(false)}
+                          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                        >
+                          검색 완료
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-
-            {/* Filter Buttons */}
-            <div className="space-y-4">
-              {/* Difficulty Filter */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">난이도</label>
-                <div className="flex flex-wrap gap-2">
-                  {["전체", "초급", "중급", "고급"].map((difficulty) => (
-                    <button
-                      key={difficulty}
-                      onClick={() => setSelectedDifficulty(difficulty)}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                        selectedDifficulty === difficulty
-                          ? "bg-green-600 text-white"
-                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                      }`}
-                    >
-                      {difficulty}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Category Filter */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">카테고리</label>
-                <div className="flex flex-wrap gap-2">
-                  {["전체", "아침", "점심", "저녁", "간식", "브런치", "다이어트", "운동후"].map((category) => (
-                    <button
-                      key={category}
-                      onClick={() => setSelectedCategory(category)}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                        selectedCategory === category
-                          ? "bg-blue-600 text-white"
-                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                      }`}
-                    >
-                      {category}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Health Rating Filter */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">건강지수 (최소)</label>
-                <div className="flex gap-2">
-                  {[0, 3, 4, 5].map((rating) => (
-                    <button
-                      key={rating}
-                      onClick={() => setSelectedHealthRating(rating)}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                        selectedHealthRating === rating
-                          ? "bg-yellow-600 text-white"
-                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                      }`}
-                    >
-                      {rating === 0 ? "전체" : `${renderStars(rating)} 이상`}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Time and Calorie Filters */}
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    조리시간 (최대 {maxCookingTime}분)
-                  </label>
-                  <input
-                    type="range"
-                    min="5"
-                    max="60"
-                    value={maxCookingTime}
-                    onChange={(e) => setMaxCookingTime(Number(e.target.value))}
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    칼로리 (최대 {maxCalories}kcal)
-                  </label>
-                  <input
-                    type="range"
-                    min="200"
-                    max="1000"
-                    step="50"
-                    value={maxCalories}
-                    onChange={(e) => setMaxCalories(Number(e.target.value))}
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                  />
-                </div>
-              </div>
-
-              {/* Reset Button */}
-              <div className="flex justify-between items-center pt-4 border-t">
-                <p className="text-sm text-gray-600">
-                  {filteredRecipes.length}개의 레시피가 검색되었습니다.
-                </p>
-                <button
-                  onClick={resetFilters}
-                  className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
-                >
-                  필터 초기화
-                </button>
-              </div>
-            </div>
-          </div>
+          )}
 
           {/* Recipe Cards */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
