@@ -42,7 +42,6 @@ function readJsonFile<T>(filePath: string, defaultValue: T): T {
     const data = fs.readFileSync(filePath, 'utf8')
     return JSON.parse(data)
   } catch (error) {
-    console.error(`Error reading ${filePath}:`, error)
     return defaultValue
   }
 }
@@ -52,7 +51,7 @@ function writeJsonFile<T>(filePath: string, data: T): void {
   try {
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2))
   } catch (error) {
-    console.error(`Error writing ${filePath}:`, error)
+    // Handle error silently or implement proper error handling
   }
 }
 
