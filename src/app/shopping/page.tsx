@@ -1,75 +1,142 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import Link from 'next/link'
 
+// Shopping item interface
 interface ShoppingItem {
   id: number
-  name: string
+  item: string
   category: string
-  quantity: number
-  unit: string
+  store: string
+  weight_g: number
+  price_won: number
+  unit_price_won_per_100g: number
+  storage: string
+  memo: string
+  icon: string
+  bgColor: string
   completed: boolean
-  price?: number
 }
 
-const initialShoppingList: ShoppingItem[] = [
-  { id: 1, name: "아보카도", category: "과일/채소", quantity: 2, unit: "개", completed: false, price: 3000 },
-  { id: 2, name: "통곡물 빵", category: "곡물", quantity: 1, unit: "봉지", completed: false, price: 4500 },
-  { id: 3, name: "연어", category: "생선/해산물", quantity: 300, unit: "g", completed: false, price: 12000 },
-  { id: 4, name: "퀴노아", category: "곡물", quantity: 1, unit: "컵", completed: false, price: 8000 },
-  { id: 5, name: "그릭요거트", category: "유제품", quantity: 1, unit: "개", completed: false, price: 3500 },
-  { id: 6, name: "블루베리", category: "과일/채소", quantity: 1, unit: "팩", completed: false, price: 5000 },
-  { id: 7, name: "닭가슴살", category: "육류", quantity: 500, unit: "g", completed: false, price: 8000 },
-  { id: 8, name: "브로콜리", category: "과일/채소", quantity: 1, unit: "개", completed: false, price: 2500 }
+// Shopping data structure
+const shoppingItems: ShoppingItem[] = [
+  {
+    id: 1,
+    item: "노브랜드 다크초콜릿 90 g × 5",
+    category: "간식·초콜릿",
+    store: "이마트 노브랜드",
+    weight_g: 450,
+    price_won: 10940,
+    unit_price_won_per_100g: 2431,
+    storage: "실온",
+    memo: "다이어트용 간식",
+    icon: "🍫",
+    bgColor: "bg-amber-100",
+    completed: false
+  },
+  {
+    id: 2,
+    item: "그릭데이 시그니처 그릭요거트 300 g",
+    category: "요거트·발효유",
+    store: "쿠팡",
+    weight_g: 300,
+    price_won: 11400,
+    unit_price_won_per_100g: 3800,
+    storage: "냉장",
+    memo: "오버나이트 오트밀용",
+    icon: "🥣",
+    bgColor: "bg-blue-100",
+    completed: false
+  },
+  {
+    id: 3,
+    item: "올바른 수산 냉동 연어 스테이크 350 g",
+    category: "해산물·생선",
+    store: "쿠팡",
+    weight_g: 350,
+    price_won: 9980,
+    unit_price_won_per_100g: 2851,
+    storage: "냉동",
+    memo: "연어덮밥·스테이크용",
+    icon: "🐟",
+    bgColor: "bg-orange-100",
+    completed: false
+  },
+  {
+    id: 4,
+    item: "수월한 브라질산 순살 조각정육(냉동) 2 kg",
+    category: "육류·닭고기",
+    store: "쿠팡",
+    weight_g: 2000,
+    price_won: 21900,
+    unit_price_won_per_100g: 1095,
+    storage: "냉동",
+    memo: "덮밥·단백질 보충용",
+    icon: "🍗",
+    bgColor: "bg-red-100",
+    completed: false
+  }
 ]
 
 export default function ShoppingPage() {
-  const [shoppingList, setShoppingList] = useState<ShoppingItem[]>(initialShoppingList)
-  const [newItem, setNewItem] = useState({ name: "", category: "기타", quantity: 1, unit: "개" })
-  const [filter, setFilter] = useState("전체")
+  const [searchTerm, setSearchTerm] = useState("")
+  const [selectedCategory, setSelectedCategory] = useState("전체")
+  const [selectedStore, setSelectedStore] = useState("전체")
+  const [selectedStorage, setSelectedStorage] = useState("전체")
+  const [maxPrice, setMaxPrice] = useState(25000)
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false)
+  const [viewMode, setViewMode] = useState("card") // "card" 또는 "list"
+  const [items, setItems] = useState(shoppingItems)
 
-  const categories = ["전체", "과일/채소", "육류", "생선/해산물", "유제품", "곡물", "조미료", "기타"]
+  const filteredItems = useMemo(() => {
+    return items.filter((item: ShoppingItem) => {
+      const matchesSearch = item.item.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           item.memo.toLowerCase().includes(searchTerm.toLowerCase())
+      const matchesCategory = selectedCategory === "전체" || item.category === selectedCategory
+      const matchesStore = selectedStore === "전체" || item.store === selectedStore
+      const matchesStorage = selectedStorage === "전체" || item.storage === selectedStorage
+      const matchesPrice = item.price_won <= maxPrice
 
-  const addItem = () => {
-    if (newItem.name.trim()) {
-      const item: ShoppingItem = {
-        id: Date.now(),
-        name: newItem.name,
-        category: newItem.category,
-        quantity: newItem.quantity,
-        unit: newItem.unit,
-        completed: false
-      }
-      setShoppingList([...shoppingList, item])
-      setNewItem({ name: "", category: "기타", quantity: 1, unit: "개" })
-    }
+      return matchesSearch && matchesCategory && matchesStore && matchesStorage && matchesPrice
+    })
+  }, [searchTerm, selectedCategory, selectedStore, selectedStorage, maxPrice, items])
+
+  const resetFilters = () => {
+    setSearchTerm("")
+    setSelectedCategory("전체")
+    setSelectedStore("전체")
+    setSelectedStorage("전체")
+    setMaxPrice(25000)
   }
 
   const toggleComplete = (id: number) => {
-    setShoppingList(shoppingList.map(item => 
+    setItems(items.map((item: ShoppingItem) => 
       item.id === id ? { ...item, completed: !item.completed } : item
     ))
   }
 
-  const deleteItem = (id: number) => {
-    setShoppingList(shoppingList.filter(item => item.id !== id))
+  const getStorageIcon = (storage: string) => {
+    switch (storage) {
+      case "냉장": return "❄️"
+      case "냉동": return "🧊"
+      case "실온": return "🌡️"
+      default: return "📦"
+    }
   }
 
-  const filteredItems = filter === "전체" 
-    ? shoppingList 
-    : shoppingList.filter(item => item.category === filter)
+  const totalPrice = filteredItems.reduce((sum: number, item: ShoppingItem) => sum + item.price_won, 0)
+  const completedItems = filteredItems.filter((item: ShoppingItem) => item.completed)
 
-  const completedItems = shoppingList.filter(item => item.completed)
-  const totalItems = shoppingList.length
-  const totalPrice = shoppingList
-    .filter(item => item.price)
-    .reduce((sum, item) => sum + (item.price || 0), 0)
+  const handleApiCall = async () => {
+    // 새 창에서 쇼핑 API JSON 페이지 열기
+    window.open('/api/shopping', '_blank')
+  }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-100">
       <div className="container mx-auto px-4 py-16">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           {/* Header with back button */}
           <div className="flex items-center justify-between mb-8">
             <Link 
@@ -87,25 +154,208 @@ export default function ShoppingPage() {
           <div className="text-center mb-12">
             <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
               스마트{' '}
-              <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 구매목록
               </span>
             </h1>
-            <p className="text-xl text-gray-600 mb-8">
-              건강한 식단을 위한 체계적인 장보기 관리
-            </p>
+            <div className="flex gap-4 justify-center mb-8">
+              <button
+                onClick={handleApiCall}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium transition-colors shadow-lg"
+              >
+                🛒 쇼핑 API 호출
+              </button>
+              <button
+                onClick={() => setIsSearchModalOpen(true)}
+                className="bg-white hover:bg-gray-50 text-gray-700 px-4 py-3 rounded-lg border border-gray-300 transition-colors shadow-lg"
+              >
+                🔍 상품 검색
+              </button>
+            </div>
+            
+            {/* View Mode Toggle */}
+            <div className="flex justify-center items-center gap-2 bg-white rounded-lg p-1 shadow-lg inline-flex">
+              <button
+                onClick={() => setViewMode("card")}
+                className={`px-4 py-2 rounded-md font-medium transition-colors flex items-center gap-2 ${
+                  viewMode === "card"
+                    ? "bg-blue-600 text-white shadow-md"
+                    : "text-gray-600 hover:bg-gray-100"
+                }`}
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14-7H5a2 2 0 00-2 2v1a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zM19 18H5m14-7H5a2 2 0 00-2 2v1a2 2 0 002 2h14a2 2 0 002-2v-1a2 2 0 00-2-2z" />
+                </svg>
+                카드보기
+              </button>
+              <button
+                onClick={() => setViewMode("list")}
+                className={`px-4 py-2 rounded-md font-medium transition-colors flex items-center gap-2 ${
+                  viewMode === "list"
+                    ? "bg-blue-600 text-white shadow-md"
+                    : "text-gray-600 hover:bg-gray-100"
+                }`}
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                </svg>
+                목록보기
+              </button>
+            </div>
           </div>
+
+          {/* Search Modal */}
+          {isSearchModalOpen && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+              <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                <div className="p-6">
+                  <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-2xl font-bold text-gray-900">상품 검색 및 필터</h2>
+                    <button
+                      onClick={() => setIsSearchModalOpen(false)}
+                      className="text-gray-500 hover:text-gray-700"
+                    >
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+
+                  {/* Search Bar */}
+                  <div className="mb-6">
+                    <div className="relative">
+                      <input
+                        type="text"
+                        placeholder="상품명이나 메모를 검색하세요..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Filter Buttons */}
+                  <div className="space-y-4">
+                    {/* Category Filter */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">카테고리</label>
+                      <div className="flex flex-wrap gap-2">
+                        {["전체", "간식·초콜릿", "요거트·발효유", "해산물·생선", "육류·닭고기"].map((category) => (
+                          <button
+                            key={category}
+                            onClick={() => setSelectedCategory(category)}
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                              selectedCategory === category
+                                ? "bg-blue-600 text-white"
+                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                            }`}
+                          >
+                            {category}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Store Filter */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">구매처</label>
+                      <div className="flex flex-wrap gap-2">
+                        {["전체", "쿠팡", "이마트 노브랜드"].map((store) => (
+                          <button
+                            key={store}
+                            onClick={() => setSelectedStore(store)}
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                              selectedStore === store
+                                ? "bg-green-600 text-white"
+                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                            }`}
+                          >
+                            {store}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Storage Filter */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">보관방법</label>
+                      <div className="flex flex-wrap gap-2">
+                        {["전체", "실온", "냉장", "냉동"].map((storage) => (
+                          <button
+                            key={storage}
+                            onClick={() => setSelectedStorage(storage)}
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1 ${
+                              selectedStorage === storage
+                                ? "bg-purple-600 text-white"
+                                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                            }`}
+                          >
+                            {storage !== "전체" && getStorageIcon(storage)}
+                            {storage}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Price Filter */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        최대 가격: {maxPrice.toLocaleString()}원
+                      </label>
+                      <input
+                        type="range"
+                        min="5000"
+                        max="25000"
+                        step="1000"
+                        value={maxPrice}
+                        onChange={(e) => setMaxPrice(parseInt(e.target.value))}
+                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                      />
+                      <div className="flex justify-between text-xs text-gray-500 mt-1">
+                        <span>5,000원</span>
+                        <span>25,000원</span>
+                      </div>
+                    </div>
+
+                    {/* Reset Button */}
+                    <div className="flex justify-end">
+                      <button
+                        onClick={resetFilters}
+                        className="text-red-600 hover:text-red-700 text-sm font-medium"
+                      >
+                        필터 초기화
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 pt-6 border-t">
+                    <button
+                      onClick={() => setIsSearchModalOpen(false)}
+                      className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                    >
+                      필터 적용하기 ({filteredItems.length}개 상품)
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Statistics */}
           <div className="grid md:grid-cols-3 gap-6 mb-8">
             <div className="bg-white rounded-xl p-6 shadow-lg">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <span className="text-2xl">📝</span>
+                  <span className="text-2xl">🛒</span>
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-gray-900">{totalItems}</h3>
-                  <p className="text-gray-600">전체 항목</p>
+                  <h3 className="text-2xl font-bold text-gray-900">{filteredItems.length}</h3>
+                  <p className="text-gray-600">선택된 상품</p>
                 </div>
               </div>
             </div>
@@ -116,7 +366,7 @@ export default function ShoppingPage() {
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold text-gray-900">{completedItems.length}</h3>
-                  <p className="text-gray-600">완료 항목</p>
+                  <p className="text-gray-600">구매 완료</p>
                 </div>
               </div>
             </div>
@@ -127,176 +377,203 @@ export default function ShoppingPage() {
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold text-gray-900">{totalPrice.toLocaleString()}원</h3>
-                  <p className="text-gray-600">예상 금액</p>
+                  <p className="text-gray-600">총 예상 금액</p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Add New Item */}
-          <div className="bg-white rounded-xl p-6 shadow-lg mb-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">새 항목 추가</h2>
-            <div className="grid md:grid-cols-4 gap-4">
-              <input
-                type="text"
-                placeholder="상품명"
-                value={newItem.name}
-                onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-              <select
-                value={newItem.category}
-                onChange={(e) => setNewItem({ ...newItem, category: e.target.value })}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                {categories.slice(1).map(category => (
-                  <option key={category} value={category}>{category}</option>
-                ))}
-              </select>
-              <div className="flex gap-2">
-                <input
-                  type="number"
-                  min="1"
-                  value={newItem.quantity}
-                  onChange={(e) => setNewItem({ ...newItem, quantity: parseInt(e.target.value) || 1 })}
-                  className="w-20 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-                <select
-                  value={newItem.unit}
-                  onChange={(e) => setNewItem({ ...newItem, unit: e.target.value })}
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="개">개</option>
-                  <option value="봉지">봉지</option>
-                  <option value="팩">팩</option>
-                  <option value="g">g</option>
-                  <option value="kg">kg</option>
-                  <option value="L">L</option>
-                  <option value="ml">ml</option>
-                </select>
-              </div>
-              <button
-                onClick={addItem}
-                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                추가
-              </button>
-            </div>
-          </div>
+          {/* Shopping Items */}
+          {viewMode === "card" ? (
+            /* Card View */
+            <div className="grid lg:grid-cols-2 gap-8">
+              {filteredItems.map((item) => (
+                <div key={item.id} className={`${item.bgColor} rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 relative`}>
+                  {/* Completion Toggle */}
+                  <button
+                    onClick={() => toggleComplete(item.id)}
+                    className={`absolute top-4 right-4 w-8 h-8 rounded-full border-2 flex items-center justify-center transition-colors ${
+                      item.completed
+                        ? "bg-green-500 border-green-500 text-white"
+                        : "border-gray-300 hover:border-green-500 bg-white"
+                    }`}
+                  >
+                    {item.completed && (
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </button>
 
-          {/* Category Filter */}
-          <div className="bg-white rounded-xl p-6 shadow-lg mb-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">카테고리 필터</h2>
-            <div className="flex flex-wrap gap-2">
-              {categories.map(category => (
-                <button
-                  key={category}
-                  onClick={() => setFilter(category)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    filter === category
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                  }`}
-                >
-                  {category}
-                </button>
+                  <div className="flex items-start gap-4 mb-6">
+                    <div className="text-4xl">{item.icon}</div>
+                    <div className="flex-grow">
+                      <h3 className={`text-xl font-bold mb-2 ${item.completed ? 'line-through text-gray-500' : 'text-gray-900'}`}>
+                        {item.item}
+                      </h3>
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="bg-white px-3 py-1 rounded-full text-sm font-medium text-gray-700">
+                          {item.category}
+                        </span>
+                        <span className="bg-white px-3 py-1 rounded-full text-sm font-medium text-blue-700">
+                          {item.store}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div className="bg-white rounded-lg p-3">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-lg">💰</span>
+                        <span className="text-sm text-gray-600">가격</span>
+                      </div>
+                      <span className="text-lg font-bold text-gray-900">
+                        {item.price_won.toLocaleString()}원
+                      </span>
+                    </div>
+                    <div className="bg-white rounded-lg p-3">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-lg">⚖️</span>
+                        <span className="text-sm text-gray-600">중량</span>
+                      </div>
+                      <span className="text-lg font-bold text-gray-900">
+                        {item.weight_g}g
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div className="bg-white rounded-lg p-3">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-lg">📊</span>
+                        <span className="text-sm text-gray-600">100g당</span>
+                      </div>
+                      <span className="text-lg font-bold text-gray-900">
+                        {item.unit_price_won_per_100g.toLocaleString()}원
+                      </span>
+                    </div>
+                    <div className="bg-white rounded-lg p-3">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-lg">{getStorageIcon(item.storage)}</span>
+                        <span className="text-sm text-gray-600">보관</span>
+                      </div>
+                      <span className="text-lg font-bold text-gray-900">
+                        {item.storage}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="bg-white rounded-lg p-3">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-lg">📝</span>
+                      <span className="text-sm text-gray-600">메모</span>
+                    </div>
+                    <span className="text-sm text-gray-700">
+                      {item.memo}
+                    </span>
+                  </div>
+                </div>
               ))}
             </div>
-          </div>
-
-          {/* Shopping List */}
-          <div className="bg-white rounded-xl shadow-lg">
-            <div className="p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                구매목록 ({filteredItems.length}개)
-              </h2>
-              
-              {filteredItems.length === 0 ? (
-                <div className="text-center py-12">
-                  <div className="text-6xl mb-4">🛒</div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">목록이 비어있습니다</h3>
-                  <p className="text-gray-600">새로운 항목을 추가해보세요.</p>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {filteredItems.map(item => (
-                    <div
-                      key={item.id}
-                      className={`flex items-center gap-4 p-4 rounded-lg border transition-colors ${
-                        item.completed
-                          ? "bg-green-50 border-green-200"
-                          : "bg-gray-50 border-gray-200 hover:bg-gray-100"
-                      }`}
-                    >
-                      <button
-                        onClick={() => toggleComplete(item.id)}
-                        className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
+          ) : (
+            /* List View */
+            <div className="bg-white rounded-xl shadow-lg">
+              <div className="p-6">
+                <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                  구매목록 ({filteredItems.length}개)
+                </h2>
+                
+                {filteredItems.length === 0 ? (
+                  <div className="text-center py-12">
+                    <div className="text-6xl mb-4">🛒</div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-2">조건에 맞는 상품이 없습니다</h3>
+                    <p className="text-gray-600">필터 조건을 조정해보세요.</p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {filteredItems.map(item => (
+                      <div
+                        key={item.id}
+                        className={`flex items-center gap-4 p-4 rounded-lg border transition-colors ${
                           item.completed
-                            ? "bg-green-500 border-green-500 text-white"
-                            : "border-gray-300 hover:border-green-500"
+                            ? "bg-green-50 border-green-200"
+                            : "bg-gray-50 border-gray-200 hover:bg-gray-100"
                         }`}
                       >
-                        {item.completed && (
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                          </svg>
-                        )}
-                      </button>
-                      
-                      <div className="flex-grow">
-                        <h3 className={`text-lg font-medium ${
-                          item.completed ? "text-gray-500 line-through" : "text-gray-900"
-                        }`}>
-                          {item.name}
-                        </h3>
-                        <div className="flex items-center gap-3 mt-1">
-                          <span className="text-sm px-2 py-1 bg-blue-100 text-blue-800 rounded-full">
-                            {item.category}
-                          </span>
-                          <span className="text-sm text-gray-500">
-                            {item.quantity} {item.unit}
-                          </span>
-                          {item.price && (
-                            <span className="text-sm font-medium text-green-600">
-                              {item.price.toLocaleString()}원
-                            </span>
+                        <button
+                          onClick={() => toggleComplete(item.id)}
+                          className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
+                            item.completed
+                              ? "bg-green-500 border-green-500 text-white"
+                              : "border-gray-300 hover:border-green-500"
+                          }`}
+                        >
+                          {item.completed && (
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
                           )}
+                        </button>
+                        
+                        <div className="text-2xl">{item.icon}</div>
+                        
+                        <div className="flex-grow">
+                          <h3 className={`text-lg font-medium ${
+                            item.completed ? "text-gray-500 line-through" : "text-gray-900"
+                          }`}>
+                            {item.item}
+                          </h3>
+                          <div className="flex items-center gap-3 mt-1 flex-wrap">
+                            <span className="text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded-full">
+                              {item.category}
+                            </span>
+                            <span className="text-xs px-2 py-1 bg-green-100 text-green-800 rounded-full">
+                              {item.store}
+                            </span>
+                            <span className="text-xs text-gray-500">
+                              {item.weight_g}g
+                            </span>
+                            <span className="text-xs font-medium text-purple-600 flex items-center gap-1">
+                              {getStorageIcon(item.storage)} {item.storage}
+                            </span>
+                            <span className="text-sm font-medium text-gray-700">
+                              {item.price_won.toLocaleString()}원
+                            </span>
+                            <span className="text-xs text-gray-500">
+                              (100g당 {item.unit_price_won_per_100g.toLocaleString()}원)
+                            </span>
+                          </div>
+                          <p className="text-sm text-gray-600 mt-1">
+                            {item.memo}
+                          </p>
                         </div>
                       </div>
-                      
-                      <button
-                        onClick={() => deleteItem(item.id)}
-                        className="text-red-500 hover:text-red-700 transition-colors"
-                      >
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                        </svg>
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Shopping Tips */}
           <div className="bg-white rounded-xl p-8 shadow-lg mt-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">스마트 장보기 팁</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">스마트 쇼핑 가이드</h2>
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h3 className="text-lg font-semibold text-blue-700 mb-3">💡 계획적인 쇼핑</h3>
+                <h3 className="text-lg font-semibold text-blue-700 mb-3">💡 가격 비교 팁</h3>
                 <ul className="text-sm text-gray-600 space-y-2">
-                  <li>• 일주일 식단을 미리 계획하고 필요한 재료를 정리하세요</li>
-                  <li>• 카테고리별로 정리하여 동선을 효율적으로 계획하세요</li>
-                  <li>• 할인 정보를 확인하고 예산을 미리 설정하세요</li>
+                  <li>• 100g당 단가를 확인하여 실제 가성비를 비교하세요</li>
+                  <li>• 대용량 상품이 항상 저렴한 것은 아닙니다</li>
+                  <li>• 할인 혜택과 배송비를 함께 고려하세요</li>
                 </ul>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-green-700 mb-3">🥬 신선식품 구매 요령</h3>
+                <h3 className="text-lg font-semibold text-green-700 mb-3">🧊 보관 방법별 구매 전략</h3>
                 <ul className="text-sm text-gray-600 space-y-2">
-                  <li>• 신선한 채소와 과일은 가장 마지막에 구매하세요</li>
-                  <li>• 냉동식품과 냉장식품은 쇼핑 직전에 담으세요</li>
-                  <li>• 유통기한을 꼼꼼히 확인하고 적정량만 구매하세요</li>
+                  <li>• 냉동 상품: 대용량 구매로 장기간 활용</li>
+                  <li>• 냉장 상품: 유통기한 확인 후 적정량 구매</li>
+                  <li>• 실온 상품: 비상시를 대비해 여분 준비</li>
                 </ul>
               </div>
             </div>
