@@ -323,6 +323,7 @@ export default function Home() {
   const [maxCookingTime, setMaxCookingTime] = useState(60)
   const [maxCalories, setMaxCalories] = useState(1000)
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false)
+  const [viewMode, setViewMode] = useState("card") // "card" 또는 "list"
 
   const filteredRecipes = useMemo(() => {
     return recipes.filter(recipe => {
@@ -368,7 +369,7 @@ export default function Home() {
                 식단 레시피
               </span>
             </h1>
-            <div className="flex gap-4 justify-center">
+            <div className="flex gap-4 justify-center mb-8">
               <button
                 onClick={handleApiCall}
                 className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-medium transition-colors shadow-lg"
@@ -380,6 +381,36 @@ export default function Home() {
                 className="bg-white hover:bg-gray-50 text-gray-700 px-4 py-3 rounded-lg border border-gray-300 transition-colors shadow-lg"
               >
                 🔍 레시피 검색
+              </button>
+            </div>
+            
+            {/* View Mode Toggle */}
+            <div className="flex justify-center items-center gap-2 bg-white rounded-lg p-1 shadow-lg inline-flex">
+              <button
+                onClick={() => setViewMode("card")}
+                className={`px-4 py-2 rounded-md font-medium transition-colors flex items-center gap-2 ${
+                  viewMode === "card"
+                    ? "bg-green-600 text-white shadow-md"
+                    : "text-gray-600 hover:bg-gray-100"
+                }`}
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14-7H5a2 2 0 00-2 2v1a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zM19 18H5m14-7H5a2 2 0 00-2 2v1a2 2 0 002 2h14a2 2 0 002-2v-1a2 2 0 00-2-2z" />
+                </svg>
+                카드보기
+              </button>
+              <button
+                onClick={() => setViewMode("list")}
+                className={`px-4 py-2 rounded-md font-medium transition-colors flex items-center gap-2 ${
+                  viewMode === "list"
+                    ? "bg-green-600 text-white shadow-md"
+                    : "text-gray-600 hover:bg-gray-100"
+                }`}
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                </svg>
+                목록보기
               </button>
             </div>
           </div>
@@ -538,53 +569,94 @@ export default function Home() {
             </div>
           )}
 
-          {/* Recipe Cards */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            {filteredRecipes.map((recipe) => (
-              <div key={recipe.id} className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
-                <div className={`w-16 h-16 ${recipe.bgColor} rounded-lg flex items-center justify-center mb-4 mx-auto`}>
-                  <span className="text-2xl">{recipe.icon}</span>
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">{recipe.name}</h3>
-                <div className="flex items-center justify-between mb-3">
-                  <span className={`${recipe.difficultyColor} text-xs px-2 py-1 rounded-full`}>
-                    {recipe.difficulty}
-                  </span>
-                  <span className="text-xs text-green-600 font-medium">
-                    {renderStars(recipe.healthRating)} 건강지수
-                  </span>
-                </div>
-                <p className="text-gray-600 mb-4 text-sm">{recipe.description}</p>
-                
-                <div className="text-left space-y-3 mb-4">
-                  <h4 className="font-semibold text-green-700 text-sm">재료:</h4>
-                  <ul className="text-xs text-gray-600 list-disc list-inside space-y-1">
-                    {recipe.ingredients.map((ingredient, index) => (
-                      <li key={index}>{ingredient}</li>
-                    ))}
-                  </ul>
-                </div>
+          {/* Recipe Display */}
+          {viewMode === "card" ? (
+            /* Card View */
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+              {filteredRecipes.map((recipe) => (
+                <div key={recipe.id} className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+                  <div className={`w-16 h-16 ${recipe.bgColor} rounded-lg flex items-center justify-center mb-4 mx-auto`}>
+                    <span className="text-2xl">{recipe.icon}</span>
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-3">{recipe.name}</h3>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className={`${recipe.difficultyColor} text-xs px-2 py-1 rounded-full`}>
+                      {recipe.difficulty}
+                    </span>
+                    <span className="text-xs text-green-600 font-medium">
+                      {renderStars(recipe.healthRating)} 건강지수
+                    </span>
+                  </div>
+                  <p className="text-gray-600 mb-4 text-sm">{recipe.description}</p>
+                  
+                  <div className="text-left space-y-3 mb-4">
+                    <h4 className="font-semibold text-green-700 text-sm">재료:</h4>
+                    <ul className="text-xs text-gray-600 list-disc list-inside space-y-1">
+                      {recipe.ingredients.map((ingredient, index) => (
+                        <li key={index}>{ingredient}</li>
+                      ))}
+                    </ul>
+                  </div>
 
-                <div className="text-left space-y-3 mb-4">
-                  <h4 className="font-semibold text-blue-700 text-sm">조리 방법:</h4>
-                  <ol className="text-xs text-gray-600 list-decimal list-inside space-y-1">
-                    {recipe.instructions.map((instruction, index) => (
-                      <li key={index}>{instruction}</li>
-                    ))}
-                  </ol>
-                </div>
+                  <div className="text-left space-y-3 mb-4">
+                    <h4 className="font-semibold text-blue-700 text-sm">조리 방법:</h4>
+                    <ol className="text-xs text-gray-600 list-decimal list-inside space-y-1">
+                      {recipe.instructions.map((instruction, index) => (
+                        <li key={index}>{instruction}</li>
+                      ))}
+                    </ol>
+                  </div>
 
-                <div className="text-left space-y-2 mb-4">
-                  <h4 className="font-semibold text-purple-700 text-sm">💡 팁:</h4>
-                  <p className="text-xs text-gray-600">{recipe.tip}</p>
-                </div>
+                  <div className="text-left space-y-2 mb-4">
+                    <h4 className="font-semibold text-purple-700 text-sm">💡 팁:</h4>
+                    <p className="text-xs text-gray-600">{recipe.tip}</p>
+                  </div>
 
-                <div className="text-xs text-green-600 font-medium border-t pt-3">
-                  ⏰ 조리시간: {recipe.cookingTime}분 | 🔥 칼로리: {recipe.calories}kcal | 💪 단백질: {recipe.protein}g
+                  <div className="text-xs text-green-600 font-medium border-t pt-3">
+                    ⏰ 조리시간: {recipe.cookingTime}분 | 🔥 칼로리: {recipe.calories}kcal | 💪 단백질: {recipe.protein}g
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            /* List View */
+            <div className="bg-white rounded-xl shadow-lg mb-16">
+              <div className="p-6">
+                <h2 className="text-xl font-semibold text-gray-900 mb-4">레시피 목록 ({filteredRecipes.length}개)</h2>
+                <div className="space-y-3">
+                  {filteredRecipes.map((recipe) => (
+                    <div key={recipe.id} className="flex items-center gap-4 p-4 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer border border-gray-100">
+                      <div className={`w-12 h-12 ${recipe.bgColor} rounded-lg flex items-center justify-center flex-shrink-0`}>
+                        <span className="text-xl">{recipe.icon}</span>
+                      </div>
+                      <div className="flex-grow">
+                        <h3 className="text-lg font-medium text-gray-900">{recipe.name}</h3>
+                        <div className="flex items-center gap-3 mt-1">
+                          <span className={`${recipe.difficultyColor} text-xs px-2 py-1 rounded-full`}>
+                            {recipe.difficulty}
+                          </span>
+                          <span className="text-xs text-gray-500">
+                            ⏰ {recipe.cookingTime}분
+                          </span>
+                          <span className="text-xs text-gray-500">
+                            🔥 {recipe.calories}kcal
+                          </span>
+                          <span className="text-xs text-green-600">
+                            {renderStars(recipe.healthRating)}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="text-gray-400">
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          )}
 
           {/* No Results Message */}
           {filteredRecipes.length === 0 && (
