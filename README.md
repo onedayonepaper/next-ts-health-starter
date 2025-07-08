@@ -1,15 +1,21 @@
 # Next.js Health Starter
 
-A modern web application starter built with **Next.js 14**, **TypeScript**, **Tailwind CSS**, and **ESLint**. Features a beautiful homepage and a comprehensive health check API endpoint.
+A modern, full-stack web application built with **Next.js 14**, **TypeScript**, **Tailwind CSS**, and comprehensive authentication and task management features.
 
 ## 🚀 Features
 
 - ⚡ **Next.js 14** with App Router for optimal performance
 - 🔷 **TypeScript** for type safety and better developer experience
 - 🎨 **Tailwind CSS** for rapid UI development
-- 📏 **ESLint** for code quality and consistency
-- 🏥 **Health Check API** with detailed system information
+- � **JWT Authentication** with secure password hashing
+- 📝 **Task Management** with full CRUD operations
+- 🛡️ **Middleware Protection** for secure routes
+- 📊 **Dashboard** with real-time statistics
+- 🎯 **Form Validation** with Zod and React Hook Form
 - 📱 **Responsive Design** with beautiful UI components
+- 🔔 **Toast Notifications** for user feedback
+- 🏥 **Health Check API** with detailed system information
+- � **JSON File Database** for simple data persistence
 - 🛠️ **Production Ready** with optimized build configuration
 
 ## 🏗️ Tech Stack
@@ -17,6 +23,12 @@ A modern web application starter built with **Next.js 14**, **TypeScript**, **Ta
 - **Framework**: Next.js 14
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
+- **Authentication**: JWT with bcryptjs
+- **Validation**: Zod
+- **Forms**: React Hook Form
+- **UI Components**: Lucide React icons
+- **Notifications**: React Hot Toast
+- **Database**: JSON file-based storage
 - **Linting**: ESLint
 - **Package Manager**: npm
 
@@ -40,12 +52,40 @@ cd next-ts-health-starter
 npm install
 ```
 
-3. Run the development server:
+3. Create environment variables (optional):
+```bash
+cp .env.example .env.local
+```
+
+Add the following variables to `.env.local`:
+```
+JWT_SECRET=your-super-secret-jwt-key-here
+NODE_ENV=development
+```
+
+4. Run the development server:
 ```bash
 npm run dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## 🎯 Getting Started
+
+1. **Homepage**: Visit the homepage to see the application overview
+2. **Register**: Create a new account at `/register`
+3. **Login**: Sign in to your account at `/login`
+4. **Dashboard**: Access your personal dashboard at `/dashboard`
+5. **Create Tasks**: Add new tasks using the dashboard interface
+6. **Manage Tasks**: Mark tasks as complete or delete them as needed
+
+## 🔐 Authentication Flow
+
+1. **Registration**: Users can create accounts with email and password
+2. **Login**: Authentication returns a JWT token stored in localStorage
+3. **Protected Routes**: Middleware automatically protects dashboard and API routes
+4. **Token Validation**: All API requests require valid Bearer tokens
+5. **Session Management**: Tokens expire after 24 hours for security
 
 ## 📖 Available Scripts
 
@@ -55,6 +95,47 @@ npm run dev
 - `npm run lint` - Run ESLint for code quality checks
 
 ## 🔗 API Endpoints
+
+### Authentication
+
+**POST** `/api/auth/register`
+- Register a new user account
+- Body: `{ name, email, password, confirmPassword }`
+- Returns: JWT token and user information
+
+**POST** `/api/auth/login`
+- Login with existing credentials
+- Body: `{ email, password }`
+- Returns: JWT token and user information
+
+### Task Management
+
+**GET** `/api/tasks`
+- Get all tasks for authenticated user
+- Requires: Bearer token in Authorization header
+- Returns: Array of user's tasks
+
+**POST** `/api/tasks`
+- Create a new task
+- Requires: Bearer token in Authorization header
+- Body: `{ title, description?, completed? }`
+- Returns: Created task object
+
+**GET** `/api/tasks/[id]`
+- Get specific task by ID
+- Requires: Bearer token in Authorization header
+- Returns: Task object
+
+**PUT** `/api/tasks/[id]`
+- Update specific task
+- Requires: Bearer token in Authorization header
+- Body: `{ title?, description?, completed? }`
+- Returns: Updated task object
+
+**DELETE** `/api/tasks/[id]`
+- Delete specific task
+- Requires: Bearer token in Authorization header
+- Returns: Success message
 
 ### Health Check
 
@@ -79,12 +160,26 @@ Returns comprehensive health information about the application:
 
 ## 🎨 UI Components
 
-The homepage includes:
+The application includes:
 
+### Homepage
 - **Hero Section** with gradient text and call-to-action buttons
-- **Features Grid** showcasing the technology stack benefits
-- **Technology Badges** displaying the tools used
+- **Features Grid** showcasing authentication and task management
+- **Technology Badges** displaying the full tech stack
 - **Responsive Design** that works on all devices
+
+### Authentication Pages
+- **Login Form** with email/password validation
+- **Register Form** with password confirmation
+- **Form Validation** with real-time error messages
+- **Loading States** during API calls
+
+### Dashboard
+- **Statistics Cards** showing task completion metrics
+- **Task List** with interactive completion toggles
+- **Create Task Form** with inline editing
+- **User Profile** section with logout functionality
+- **Responsive Layout** optimized for mobile and desktop
 
 ## 🔧 Configuration
 
@@ -109,15 +204,36 @@ TypeScript is configured with strict mode for maximum type safety.
 src/
 ├── app/
 │   ├── api/
-│   │   └── health/
-│   │       └── route.ts      # Health check API endpoint
-│   ├── globals.css           # Global styles with Tailwind
-│   ├── layout.tsx           # Root layout component
-│   └── page.tsx             # Homepage component
-├── next.config.js           # Next.js configuration
-├── tailwind.config.ts       # Tailwind CSS configuration
-├── tsconfig.json           # TypeScript configuration
-└── .eslintrc.json          # ESLint configuration
+│   │   ├── auth/
+│   │   │   ├── login/
+│   │   │   │   └── route.ts     # Login API endpoint
+│   │   │   └── register/
+│   │   │       └── route.ts     # Register API endpoint
+│   │   ├── health/
+│   │   │   └── route.ts         # Health check API endpoint
+│   │   └── tasks/
+│   │       ├── [id]/
+│   │       │   └── route.ts     # Individual task operations
+│   │       └── route.ts         # Task list operations
+│   ├── dashboard/
+│   │   └── page.tsx             # Dashboard page
+│   ├── login/
+│   │   └── page.tsx             # Login page
+│   ├── register/
+│   │   └── page.tsx             # Register page
+│   ├── globals.css              # Global styles with Tailwind
+│   ├── layout.tsx               # Root layout with toast provider
+│   └── page.tsx                 # Homepage component
+├── lib/
+│   ├── auth.ts                  # Authentication utilities
+│   ├── database.ts              # JSON file database operations
+│   ├── utils.ts                 # Common utility functions
+│   └── validations.ts           # Zod validation schemas
+├── middleware.ts                # Next.js middleware for route protection
+├── next.config.js               # Next.js configuration
+├── tailwind.config.ts           # Tailwind CSS configuration
+├── tsconfig.json                # TypeScript configuration
+└── .eslintrc.json               # ESLint configuration
 ```
 
 ## 🚀 Deployment
