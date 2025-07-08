@@ -68,6 +68,10 @@ export async function GET() {
       message: "구매목록을 성공적으로 가져왔습니다.",
       total: shoppingItems.length,
       timestamp: new Date().toISOString()
+    }, {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+      },
     })
   } catch (error) {
     return NextResponse.json(
@@ -75,7 +79,12 @@ export async function GET() {
         success: false, 
         error: "구매목록을 가져오는 중 오류가 발생했습니다." 
       },
-      { status: 500 }
+      { 
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+        },
+      }
     )
   }
 }

@@ -86,7 +86,6 @@ export default function ShoppingPage() {
   const [selectedStorage, setSelectedStorage] = useState("전체")
   const [maxPrice, setMaxPrice] = useState(25000)
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false)
-  const [viewMode, setViewMode] = useState("card") // "card" 또는 "list"
   const [items, setItems] = useState(shoppingItems)
 
   const filteredItems = useMemo(() => {
@@ -170,36 +169,6 @@ export default function ShoppingPage() {
                 className="bg-white hover:bg-gray-50 text-gray-700 px-4 py-3 rounded-lg border border-gray-300 transition-colors shadow-lg"
               >
                 🔍 상품 검색
-              </button>
-            </div>
-            
-            {/* View Mode Toggle */}
-            <div className="flex justify-center items-center gap-2 bg-white rounded-lg p-1 shadow-lg inline-flex">
-              <button
-                onClick={() => setViewMode("card")}
-                className={`px-4 py-2 rounded-md font-medium transition-colors flex items-center gap-2 ${
-                  viewMode === "card"
-                    ? "bg-blue-600 text-white shadow-md"
-                    : "text-gray-600 hover:bg-gray-100"
-                }`}
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14-7H5a2 2 0 00-2 2v1a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zM19 18H5m14-7H5a2 2 0 00-2 2v1a2 2 0 002 2h14a2 2 0 002-2v-1a2 2 0 00-2-2z" />
-                </svg>
-                카드보기
-              </button>
-              <button
-                onClick={() => setViewMode("list")}
-                className={`px-4 py-2 rounded-md font-medium transition-colors flex items-center gap-2 ${
-                  viewMode === "list"
-                    ? "bg-blue-600 text-white shadow-md"
-                    : "text-gray-600 hover:bg-gray-100"
-                }`}
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-                </svg>
-                목록보기
               </button>
             </div>
           </div>
@@ -346,8 +315,109 @@ export default function ShoppingPage() {
             </div>
           )}
 
-          {/* Statistics */}
-          <div className="grid md:grid-cols-3 gap-6 mb-8">
+          {/* Shopping Items Table */}
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div className="p-6">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+                구매목록 ({filteredItems.length}개)
+              </h2>
+              
+              {filteredItems.length === 0 ? (
+                <div className="text-center py-12">
+                  <div className="text-6xl mb-4">🛒</div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">조건에 맞는 상품이 없습니다</h3>
+                  <p className="text-gray-600">필터 조건을 조정해보세요.</p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full border-collapse">
+                    <thead>
+                      <tr className="border-b-2 border-gray-200">
+                        <th className="text-left py-4 px-4 font-semibold text-gray-900">완료</th>
+                        <th className="text-left py-4 px-4 font-semibold text-gray-900">상품</th>
+                        <th className="text-left py-4 px-4 font-semibold text-gray-900">카테고리</th>
+                        <th className="text-left py-4 px-4 font-semibold text-gray-900">구매처</th>
+                        <th className="text-left py-4 px-4 font-semibold text-gray-900">중량</th>
+                        <th className="text-left py-4 px-4 font-semibold text-gray-900">가격</th>
+                        <th className="text-left py-4 px-4 font-semibold text-gray-900">100g당</th>
+                        <th className="text-left py-4 px-4 font-semibold text-gray-900">보관</th>
+                        <th className="text-left py-4 px-4 font-semibold text-gray-900">메모</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredItems.map((item, index) => (
+                        <tr
+                          key={item.id}
+                          className={`border-b border-gray-100 hover:bg-gray-50 transition-colors ${
+                            item.completed ? "bg-green-50" : ""
+                          }`}
+                        >
+                          <td className="py-4 px-4">
+                            <button
+                              onClick={() => toggleComplete(item.id)}
+                              className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
+                                item.completed
+                                  ? "bg-green-500 border-green-500 text-white"
+                                  : "border-gray-300 hover:border-green-500"
+                              }`}
+                            >
+                              {item.completed && (
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                </svg>
+                              )}
+                            </button>
+                          </td>
+                          <td className="py-4 px-4">
+                            <div className="flex items-center gap-3">
+                              <span className="text-2xl">{item.icon}</span>
+                              <span className={`font-medium ${
+                                item.completed ? "text-gray-500 line-through" : "text-gray-900"
+                              }`}>
+                                {item.item}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="py-4 px-4">
+                            <span className="text-sm px-2 py-1 bg-blue-100 text-blue-800 rounded-full">
+                              {item.category}
+                            </span>
+                          </td>
+                          <td className="py-4 px-4">
+                            <span className="text-sm px-2 py-1 bg-green-100 text-green-800 rounded-full">
+                              {item.store}
+                            </span>
+                          </td>
+                          <td className="py-4 px-4 text-gray-700">
+                            {item.weight_g}g
+                          </td>
+                          <td className="py-4 px-4 font-semibold text-gray-900">
+                            {item.price_won.toLocaleString()}원
+                          </td>
+                          <td className="py-4 px-4 text-gray-600">
+                            {item.unit_price_won_per_100g.toLocaleString()}원
+                          </td>
+                          <td className="py-4 px-4">
+                            <span className="flex items-center gap-1 text-sm px-2 py-1 bg-purple-100 text-purple-800 rounded-full">
+                              {getStorageIcon(item.storage)} {item.storage}
+                            </span>
+                          </td>
+                          <td className="py-4 px-4 text-sm text-gray-600 max-w-xs">
+                            <div className="truncate" title={item.memo}>
+                              {item.memo}
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Statistics - Moved to bottom */}
+          <div className="grid md:grid-cols-3 gap-6 mt-8">
             <div className="bg-white rounded-xl p-6 shadow-lg">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -382,179 +452,6 @@ export default function ShoppingPage() {
               </div>
             </div>
           </div>
-
-          {/* Shopping Items */}
-          {viewMode === "card" ? (
-            /* Card View */
-            <div className="grid lg:grid-cols-2 gap-8">
-              {filteredItems.map((item) => (
-                <div key={item.id} className={`${item.bgColor} rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 relative`}>
-                  {/* Completion Toggle */}
-                  <button
-                    onClick={() => toggleComplete(item.id)}
-                    className={`absolute top-4 right-4 w-8 h-8 rounded-full border-2 flex items-center justify-center transition-colors ${
-                      item.completed
-                        ? "bg-green-500 border-green-500 text-white"
-                        : "border-gray-300 hover:border-green-500 bg-white"
-                    }`}
-                  >
-                    {item.completed && (
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    )}
-                  </button>
-
-                  <div className="flex items-start gap-4 mb-6">
-                    <div className="text-4xl">{item.icon}</div>
-                    <div className="flex-grow">
-                      <h3 className={`text-xl font-bold mb-2 ${item.completed ? 'line-through text-gray-500' : 'text-gray-900'}`}>
-                        {item.item}
-                      </h3>
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="bg-white px-3 py-1 rounded-full text-sm font-medium text-gray-700">
-                          {item.category}
-                        </span>
-                        <span className="bg-white px-3 py-1 rounded-full text-sm font-medium text-blue-700">
-                          {item.store}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4 mb-4">
-                    <div className="bg-white rounded-lg p-3">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-lg">💰</span>
-                        <span className="text-sm text-gray-600">가격</span>
-                      </div>
-                      <span className="text-lg font-bold text-gray-900">
-                        {item.price_won.toLocaleString()}원
-                      </span>
-                    </div>
-                    <div className="bg-white rounded-lg p-3">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-lg">⚖️</span>
-                        <span className="text-sm text-gray-600">중량</span>
-                      </div>
-                      <span className="text-lg font-bold text-gray-900">
-                        {item.weight_g}g
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4 mb-4">
-                    <div className="bg-white rounded-lg p-3">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-lg">📊</span>
-                        <span className="text-sm text-gray-600">100g당</span>
-                      </div>
-                      <span className="text-lg font-bold text-gray-900">
-                        {item.unit_price_won_per_100g.toLocaleString()}원
-                      </span>
-                    </div>
-                    <div className="bg-white rounded-lg p-3">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-lg">{getStorageIcon(item.storage)}</span>
-                        <span className="text-sm text-gray-600">보관</span>
-                      </div>
-                      <span className="text-lg font-bold text-gray-900">
-                        {item.storage}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="bg-white rounded-lg p-3">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-lg">📝</span>
-                      <span className="text-sm text-gray-600">메모</span>
-                    </div>
-                    <span className="text-sm text-gray-700">
-                      {item.memo}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            /* List View */
-            <div className="bg-white rounded-xl shadow-lg">
-              <div className="p-6">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                  구매목록 ({filteredItems.length}개)
-                </h2>
-                
-                {filteredItems.length === 0 ? (
-                  <div className="text-center py-12">
-                    <div className="text-6xl mb-4">🛒</div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">조건에 맞는 상품이 없습니다</h3>
-                    <p className="text-gray-600">필터 조건을 조정해보세요.</p>
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    {filteredItems.map(item => (
-                      <div
-                        key={item.id}
-                        className={`flex items-center gap-4 p-4 rounded-lg border transition-colors ${
-                          item.completed
-                            ? "bg-green-50 border-green-200"
-                            : "bg-gray-50 border-gray-200 hover:bg-gray-100"
-                        }`}
-                      >
-                        <button
-                          onClick={() => toggleComplete(item.id)}
-                          className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
-                            item.completed
-                              ? "bg-green-500 border-green-500 text-white"
-                              : "border-gray-300 hover:border-green-500"
-                          }`}
-                        >
-                          {item.completed && (
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                            </svg>
-                          )}
-                        </button>
-                        
-                        <div className="text-2xl">{item.icon}</div>
-                        
-                        <div className="flex-grow">
-                          <h3 className={`text-lg font-medium ${
-                            item.completed ? "text-gray-500 line-through" : "text-gray-900"
-                          }`}>
-                            {item.item}
-                          </h3>
-                          <div className="flex items-center gap-3 mt-1 flex-wrap">
-                            <span className="text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded-full">
-                              {item.category}
-                            </span>
-                            <span className="text-xs px-2 py-1 bg-green-100 text-green-800 rounded-full">
-                              {item.store}
-                            </span>
-                            <span className="text-xs text-gray-500">
-                              {item.weight_g}g
-                            </span>
-                            <span className="text-xs font-medium text-purple-600 flex items-center gap-1">
-                              {getStorageIcon(item.storage)} {item.storage}
-                            </span>
-                            <span className="text-sm font-medium text-gray-700">
-                              {item.price_won.toLocaleString()}원
-                            </span>
-                            <span className="text-xs text-gray-500">
-                              (100g당 {item.unit_price_won_per_100g.toLocaleString()}원)
-                            </span>
-                          </div>
-                          <p className="text-sm text-gray-600 mt-1">
-                            {item.memo}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
 
           {/* Shopping Tips */}
           <div className="bg-white rounded-xl p-8 shadow-lg mt-8">
