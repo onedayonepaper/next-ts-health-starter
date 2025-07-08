@@ -352,8 +352,8 @@ export default function Home() {
   }
 
   const handleApiCall = async () => {
-    alert('레시피 API를 호출합니다!')
-    // 여기에 실제 API 호출 로직을 추가할 수 있습니다
+    // 새 창에서 레시피 API JSON 페이지 열기
+    window.open('/api/recipes', '_blank')
   }
 
   return (
