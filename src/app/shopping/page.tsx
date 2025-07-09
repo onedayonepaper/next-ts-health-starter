@@ -131,25 +131,13 @@ export default function ShoppingPage() {
     <main className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-100">
       <div className="container mx-auto px-3 sm:px-4 py-8 sm:py-16">
         <div className="max-w-6xl mx-auto">
-          {/* Header with back button */}
-          <div className="flex items-center justify-between mb-6 sm:mb-8">
-            <Link 
-              href="/" 
-              className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors text-sm sm:text-base"
-            >
-              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-              메인으로 돌아가기
-            </Link>
-          </div>
+          {/* Header removed - back button moved to bottom */}
 
           {/* Hero Section */}
           <div className="text-center mb-8 sm:mb-12">
             <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-4 sm:mb-6">
-              스마트{' '}
               <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                구매목록
+                스마트
               </span>
             </h1>
           </div>
@@ -378,9 +366,8 @@ export default function ShoppingPage() {
           <div className="mb-6 sm:mb-8">
             <div className="mb-4 sm:mb-6">
               <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-2">
-                구매목록 ({filteredItems.length}개)
+                ({filteredItems.length}개)
               </h2>
-              <p className="text-xs sm:text-sm text-gray-600">상품을 클릭하면 상세정보를 볼 수 있습니다</p>
             </div>
             
             {filteredItems.length === 0 ? (
@@ -390,12 +377,12 @@ export default function ShoppingPage() {
                 <p className="text-sm sm:text-base text-gray-600">필터 조건을 조정해보세요.</p>
               </div>
             ) : (
-              <div className="space-y-1">
+              <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
                 {filteredItems.map((item, index) => (
                   <div
                     key={item.id}
                     onClick={() => handleItemClick(item)}
-                    className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 hover:bg-gray-50 cursor-pointer transition-all border-b border-gray-100 last:border-b-0"
+                    className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 hover:bg-gray-50 cursor-pointer transition-all border-b border-gray-200 last:border-b-0"
                   >
                     {/* Row Number */}
                     <span className="text-sm text-gray-400 w-6 text-center flex-shrink-0">
@@ -484,6 +471,19 @@ export default function ShoppingPage() {
                   <li>• 실온 상품: 비상시를 대비해 여분 준비</li>
                 </ul>
               </div>
+            </div>
+
+            {/* Back to Main Button - Moved to bottom */}
+            <div className="flex justify-center mt-8 sm:mt-12">
+              <Link 
+                href="/" 
+                className="flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors text-sm sm:text-base bg-white px-4 sm:px-6 py-3 rounded-lg border border-blue-200 hover:border-blue-300 shadow-sm"
+              >
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+                메인으로 돌아가기
+              </Link>
             </div>
           </div>
         </div>
