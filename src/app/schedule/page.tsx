@@ -16,87 +16,164 @@ interface ScheduleItem {
   icon: string
   bgColor: string
   difficulty: string
+  completed: boolean
 }
 
 // Schedule data structure
 const scheduleItems: ScheduleItem[] = [
   {
     id: 1,
-    title: "아침 요가 스트레칭",
-    category: "운동·스트레칭",
-    time: "07:00",
-    duration_minutes: 30,
+    title: "천국의 계단 20분",
+    category: "운동·유산소",
+    time: "06:00",
+    duration_minutes: 20,
     location: "집·거실",
-    frequency: "매일",
-    memo: "하루를 시작하는 몸풀기",
-    icon: "🧘‍♀️",
-    bgColor: "bg-purple-100",
-    difficulty: "쉬움"
+    frequency: "평일",
+    memo: "출근 전 심박수 올리기",
+    icon: "⏫",
+    bgColor: "bg-red-100",
+    difficulty: "보통",
+    completed: false
   },
   {
     id: 2,
-    title: "단백질 쉐이크 준비",
+    title: "오버나이트 오트밀 아침식사",
     category: "식단·영양",
-    time: "08:30",
+    time: "06:30",
     duration_minutes: 10,
     location: "집·주방",
-    frequency: "매일",
-    memo: "운동 후 단백질 보충",
-    icon: "🥤",
+    frequency: "평일",
+    memo: "전날 준비해 둔 오트밀 섭취",
+    icon: "�",
     bgColor: "bg-green-100",
-    difficulty: "쉬움"
+    difficulty: "쉬움",
+    completed: false
   },
   {
     id: 3,
-    title: "헬스장 웨이트 트레이닝",
+    title: "근력운동 30분",
     category: "운동·근력",
-    time: "19:00",
-    duration_minutes: 90,
+    time: "12:30",
+    duration_minutes: 30,
     location: "헬스장",
-    frequency: "주 3회",
-    memo: "상체·하체 번갈아가며",
+    frequency: "평일",
+    memo: "점심시간 활용 상·하체 번갈아",
     icon: "💪",
-    bgColor: "bg-red-100",
-    difficulty: "어려움"
+    bgColor: "bg-purple-100",
+    difficulty: "어려움",
+    completed: false
   },
   {
     id: 4,
-    title: "명상 및 호흡 운동",
-    category: "휴식·명상",
-    time: "22:00",
-    duration_minutes: 20,
-    location: "집·침실",
-    frequency: "매일",
-    memo: "스트레스 해소와 숙면 준비",
-    icon: "🧘‍♂️",
+    title: "그릭요거트·간단한 저녁",
+    category: "식단·영양",
+    time: "19:00",
+    duration_minutes: 15,
+    location: "집·주방",
+    frequency: "평일",
+    memo: "저칼로리 단백질 보충",
+    icon: "�",
     bgColor: "bg-blue-100",
-    difficulty: "보통"
+    difficulty: "쉬움",
+    completed: false
   },
   {
     id: 5,
-    title: "주간 건강검진 예약",
-    category: "검진·관리",
-    time: "10:00",
-    duration_minutes: 120,
-    location: "병원",
-    frequency: "월 1회",
-    memo: "혈압, 혈당, 체중 체크",
-    icon: "🏥",
-    bgColor: "bg-yellow-100",
-    difficulty: "쉬움"
+    title: "20 km 주말 유산소",
+    category: "운동·유산소",
+    time: "05:30",
+    duration_minutes: 240,
+    location: "한강공원",
+    frequency: "주말",
+    memo: "걷기+러닝 혼합, 4 시간 예상",
+    icon: "🏃‍♂️",
+    bgColor: "bg-orange-100",
+    difficulty: "어려움",
+    completed: false
   },
   {
     id: 6,
-    title: "공원 조깅",
-    category: "운동·유산소",
-    time: "06:30",
+    title: "주말 아침 푸짐한 식사",
+    category: "식단·영양",
+    time: "10:00",
     duration_minutes: 45,
-    location: "한강공원",
-    frequency: "주 4회",
-    memo: "5km 목표, 페이스 조절",
-    icon: "🏃‍♂️",
-    bgColor: "bg-orange-100",
-    difficulty: "보통"
+    location: "집·주방",
+    frequency: "주말",
+    memo: "연어·달걀 등 고단백 위주",
+    icon: "�",
+    bgColor: "bg-yellow-100",
+    difficulty: "쉬움",
+    completed: false
+  },
+  {
+    id: 7,
+    title: "아침 식후 10분 걷기",
+    category: "운동·걷기",
+    time: "10:30",
+    duration_minutes: 10,
+    location: "동네 산책로",
+    frequency: "주말",
+    memo: "혈당 급상승 방지",
+    icon: "🚶‍♂️",
+    bgColor: "bg-gray-100",
+    difficulty: "쉬움",
+    completed: false
+  },
+  {
+    id: 8,
+    title: "주말 점심 식사",
+    category: "식단·영양",
+    time: "13:00",
+    duration_minutes: 30,
+    location: "집·주방",
+    frequency: "주말",
+    memo: "균형 잡힌 탄단지",
+    icon: "🍱",
+    bgColor: "bg-green-200",
+    difficulty: "쉬움",
+    completed: false
+  },
+  {
+    id: 9,
+    title: "점심 식후 10분 걷기",
+    category: "운동·걷기",
+    time: "13:40",
+    duration_minutes: 10,
+    location: "동네 산책로",
+    frequency: "주말",
+    memo: "소화 촉진",
+    icon: "🚶‍♂️",
+    bgColor: "bg-gray-100",
+    difficulty: "쉬움",
+    completed: false
+  },
+  {
+    id: 10,
+    title: "주말 저녁 푸짐한 식사",
+    category: "식단·영양",
+    time: "19:00",
+    duration_minutes: 60,
+    location: "집·주방",
+    frequency: "주말",
+    memo: "가끔은 외식 또는 홈파티",
+    icon: "🍽️",
+    bgColor: "bg-yellow-200",
+    difficulty: "쉬움",
+    completed: false
+  },
+  {
+    id: 11,
+    title: "저녁 식후 10분 걷기",
+    category: "운동·걷기",
+    time: "20:05",
+    duration_minutes: 10,
+    location: "동네 산책로",
+    frequency: "주말",
+    memo: "취침 전 가벼운 활동",
+    icon: "🚶‍♂️",
+    bgColor: "bg-gray-100",
+    difficulty: "쉬움",
+    completed: false
   }
 ]
 
@@ -137,6 +214,15 @@ export default function SchedulePage() {
     setIsDetailModalOpen(true)
   }
 
+  const toggleCompleted = (id: number, event: React.MouseEvent) => {
+    event.stopPropagation()
+    setItems((prevItems: ScheduleItem[]) => 
+      prevItems.map((item: ScheduleItem) => 
+        item.id === id ? { ...item, completed: !item.completed } : item
+      )
+    )
+  }
+
   const getDifficultyIcon = (difficulty: string) => {
     switch (difficulty) {
       case "쉬움": return "😊"
@@ -148,15 +234,14 @@ export default function SchedulePage() {
 
   const getFrequencyIcon = (frequency: string) => {
     switch (frequency) {
-      case "매일": return "📅"
-      case "주 3회": return "📆"
-      case "주 4회": return "📆"
-      case "월 1회": return "🗓️"
+      case "평일": return "🏢"
+      case "주말": return "🏠"
       default: return "⏰"
     }
   }
 
   const totalDuration = filteredItems.reduce((sum: number, item: ScheduleItem) => sum + item.duration_minutes, 0)
+  const completedCount = filteredItems.filter((item: ScheduleItem) => item.completed).length
 
   const handleApiCall = async () => {
     // 새 창에서 일정 API JSON 페이지 열기
@@ -210,7 +295,7 @@ export default function SchedulePage() {
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">카테고리</label>
                       <div className="flex flex-wrap gap-2">
-                        {["전체", "운동·스트레칭", "운동·근력", "운동·유산소", "식단·영양", "휴식·명상", "검진·관리"].map((category) => (
+                        {["전체", "운동·유산소", "운동·근력", "운동·걷기", "식단·영양"].map((category) => (
                           <button
                             key={category}
                             onClick={() => setSelectedCategory(category)}
@@ -230,7 +315,7 @@ export default function SchedulePage() {
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">장소</label>
                       <div className="flex flex-wrap gap-2">
-                        {["전체", "집·거실", "집·주방", "집·침실", "헬스장", "병원", "한강공원"].map((location) => (
+                        {["전체", "집·거실", "집·주방", "헬스장", "한강공원", "동네 산책로"].map((location) => (
                           <button
                             key={location}
                             onClick={() => setSelectedLocation(location)}
@@ -250,7 +335,7 @@ export default function SchedulePage() {
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">빈도</label>
                       <div className="flex flex-wrap gap-2">
-                        {["전체", "매일", "주 3회", "주 4회", "월 1회"].map((frequency) => (
+                        {["전체", "평일", "주말"].map((frequency) => (
                           <button
                             key={frequency}
                             onClick={() => setSelectedFrequency(frequency)}
@@ -411,22 +496,46 @@ export default function SchedulePage() {
                   <div
                     key={item.id}
                     onClick={() => handleItemClick(item)}
-                    className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 hover:bg-gray-50 cursor-pointer transition-all border-b border-gray-200 last:border-b-0"
+                    className={`flex items-center gap-3 sm:gap-4 p-3 sm:p-4 hover:bg-gray-50 cursor-pointer transition-all border-b border-gray-200 last:border-b-0 ${
+                      item.completed ? 'bg-green-50 opacity-70' : ''
+                    }`}
                   >
+                    {/* Checkbox */}
+                    <button
+                      onClick={(e) => toggleCompleted(item.id, e)}
+                      className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
+                        item.completed 
+                          ? 'bg-green-500 border-green-500 text-white' 
+                          : 'border-gray-300 hover:border-green-400'
+                      }`}
+                    >
+                      {item.completed && (
+                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                        </svg>
+                      )}
+                    </button>
+                    
                     {/* Row Number */}
                     <span className="text-sm text-gray-400 w-6 text-center flex-shrink-0">
                       {index + 1}
                     </span>
                     
                     {/* Icon */}
-                    <span className="text-xl sm:text-2xl flex-shrink-0">{item.icon}</span>
+                    <span className={`text-xl sm:text-2xl flex-shrink-0 ${item.completed ? 'grayscale' : ''}`}>
+                      {item.icon}
+                    </span>
                     
                     {/* Schedule Info */}
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-gray-900 text-sm sm:text-base break-words">
+                      <h3 className={`font-medium text-sm sm:text-base break-words ${
+                        item.completed ? 'text-gray-500 line-through' : 'text-gray-900'
+                      }`}>
                         {item.title}
                       </h3>
-                      <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                      <p className={`text-xs sm:text-sm mt-1 ${
+                        item.completed ? 'text-gray-400' : 'text-gray-500'
+                      }`}>
                         {item.time} • {item.duration_minutes}분 • {item.frequency}
                       </p>
                     </div>
@@ -458,7 +567,7 @@ export default function SchedulePage() {
           </div>
 
           {/* Statistics - Responsive Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mt-6 sm:mt-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mt-6 sm:mt-8">
             <div className="bg-white rounded-xl p-4 sm:p-6 shadow-lg">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-lg flex items-center justify-center">
@@ -466,7 +575,18 @@ export default function SchedulePage() {
                 </div>
                 <div>
                   <h3 className="text-xl sm:text-2xl font-bold text-gray-900">{filteredItems.length}</h3>
-                  <p className="text-sm sm:text-base text-gray-600">선택된 일정</p>
+                  <p className="text-sm sm:text-base text-gray-600">전체 일정</p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white rounded-xl p-4 sm:p-6 shadow-lg">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-emerald-100 rounded-lg flex items-center justify-center">
+                  <span className="text-lg sm:text-2xl">✅</span>
+                </div>
+                <div>
+                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900">{completedCount}</h3>
+                  <p className="text-sm sm:text-base text-gray-600">완료된 일정</p>
                 </div>
               </div>
             </div>
