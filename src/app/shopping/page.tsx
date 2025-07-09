@@ -152,20 +152,6 @@ export default function ShoppingPage() {
                 구매목록
               </span>
             </h1>
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-6 sm:mb-8">
-              <button
-                onClick={handleApiCall}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-8 py-3 rounded-lg font-medium transition-colors shadow-lg text-sm sm:text-base"
-              >
-                🛒 쇼핑 API 호출
-              </button>
-              <button
-                onClick={() => setIsSearchModalOpen(true)}
-                className="bg-white hover:bg-gray-50 text-gray-700 px-4 py-3 rounded-lg border border-gray-300 transition-colors shadow-lg text-sm sm:text-base"
-              >
-                🔍 상품 검색
-              </button>
-            </div>
           </div>
 
           {/* Search Modal */}
@@ -388,62 +374,68 @@ export default function ShoppingPage() {
             </div>
           )}
 
-          {/* Shopping Items - Simple Mobile-First Layout */}
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div className="p-4 sm:p-6">
-              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-6 gap-2">
-                <h2 className="text-xl sm:text-2xl font-semibold text-gray-900">
-                  구매목록 ({filteredItems.length}개)
-                </h2>
-                <p className="text-xs sm:text-sm text-gray-600">상품을 터치하면 상세정보를 볼 수 있습니다</p>
-              </div>
-              
-              {filteredItems.length === 0 ? (
-                <div className="text-center py-8 sm:py-12">
-                  <div className="text-4xl sm:text-6xl mb-3 sm:mb-4">🛒</div>
-                  <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">조건에 맞는 상품이 없습니다</h3>
-                  <p className="text-sm sm:text-base text-gray-600">필터 조건을 조정해보세요.</p>
-                </div>
-              ) : (
-                <div className="space-y-2 sm:space-y-3">
-                  {filteredItems.map((item) => (
-                    <div
-                      key={item.id}
-                      onClick={() => handleItemClick(item)}
-                      className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 border border-gray-100 rounded-lg hover:bg-gray-50 hover:border-gray-200 cursor-pointer transition-all active:bg-gray-100"
-                    >
-                      {/* Icon */}
-                      <span className="text-2xl sm:text-3xl flex-shrink-0">{item.icon}</span>
-                      
-                      {/* Content */}
-                                             <div className="flex-1 min-w-0">
-                         <h3 className="font-medium text-gray-900 text-sm sm:text-lg mb-1 sm:mb-0 break-words overflow-hidden">
-                           {item.item}
-                         </h3>
-                         <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600">
-                           <span className="bg-gray-100 px-2 py-1 rounded text-xs">{item.category}</span>
-                           <span className="hidden sm:inline">•</span>
-                           <span className="hidden sm:inline">{item.store}</span>
-                         </div>
-                       </div>
-                      
-                      {/* Price & Arrow */}
-                      <div className="text-right flex-shrink-0 flex items-center gap-2 sm:gap-3">
-                        <div>
-                          <p className="font-semibold text-gray-900 text-sm sm:text-base">
-                            {item.price_won.toLocaleString()}원
-                          </p>
-                          <p className="text-xs sm:text-sm text-gray-600">{item.weight_g}g</p>
-                        </div>
-                        <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+          {/* Shopping Items - Simple Table Layout */}
+          <div className="mb-6 sm:mb-8">
+            <div className="mb-4 sm:mb-6">
+              <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-2">
+                구매목록 ({filteredItems.length}개)
+              </h2>
+              <p className="text-xs sm:text-sm text-gray-600">상품을 클릭하면 상세정보를 볼 수 있습니다</p>
             </div>
+            
+            {filteredItems.length === 0 ? (
+              <div className="text-center py-8 sm:py-12 bg-gray-50 rounded-lg">
+                <div className="text-4xl sm:text-6xl mb-3 sm:mb-4">🛒</div>
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">조건에 맞는 상품이 없습니다</h3>
+                <p className="text-sm sm:text-base text-gray-600">필터 조건을 조정해보세요.</p>
+              </div>
+            ) : (
+              <div className="space-y-1">
+                {filteredItems.map((item, index) => (
+                  <div
+                    key={item.id}
+                    onClick={() => handleItemClick(item)}
+                    className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 hover:bg-gray-50 cursor-pointer transition-all border-b border-gray-100 last:border-b-0"
+                  >
+                    {/* Row Number */}
+                    <span className="text-sm text-gray-400 w-6 text-center flex-shrink-0">
+                      {index + 1}
+                    </span>
+                    
+                    {/* Icon */}
+                    <span className="text-xl sm:text-2xl flex-shrink-0">{item.icon}</span>
+                    
+                    {/* Item Name */}
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-medium text-gray-900 text-sm sm:text-base break-words">
+                        {item.item}
+                      </h3>
+                    </div>
+                    
+                    {/* Arrow */}
+                    <svg className="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Action Buttons - Moved below the table */}
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-8 sm:mb-12">
+            <button
+              onClick={handleApiCall}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-8 py-3 rounded-lg font-medium transition-colors shadow-lg text-sm sm:text-base"
+            >
+              🛒 쇼핑 API 호출
+            </button>
+            <button
+              onClick={() => setIsSearchModalOpen(true)}
+              className="bg-white hover:bg-gray-50 text-gray-700 px-4 py-3 rounded-lg border border-gray-300 transition-colors shadow-lg text-sm sm:text-base"
+            >
+              🔍 상품 검색
+            </button>
           </div>
 
           {/* Statistics - Responsive Grid */}
