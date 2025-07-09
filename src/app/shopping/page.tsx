@@ -137,7 +137,7 @@ export default function ShoppingPage() {
           <div className="text-center mb-8 sm:mb-12">
             <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-4 sm:mb-6">
               <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                스마트
+                스마트 장보기
               </span>
             </h1>
           </div>
@@ -366,7 +366,7 @@ export default function ShoppingPage() {
           <div className="mb-6 sm:mb-8">
             <div className="mb-4 sm:mb-6">
               <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-2">
-                ({filteredItems.length}개)
+
               </h2>
             </div>
             
