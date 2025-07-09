@@ -133,15 +133,6 @@ export default function ShoppingPage() {
         <div className="max-w-6xl mx-auto">
           {/* Header removed - back button moved to bottom */}
 
-          {/* Hero Section */}
-          <div className="text-center mb-8 sm:mb-12">
-            <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-4 sm:mb-6">
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                스마트 장보기
-              </span>
-            </h1>
-          </div>
-
           {/* Search Modal */}
           {isSearchModalOpen && (
             <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-3 sm:p-4">
@@ -377,7 +368,7 @@ export default function ShoppingPage() {
                 <p className="text-sm sm:text-base text-gray-600">필터 조건을 조정해보세요.</p>
               </div>
             ) : (
-              <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+              <div className="bg-white overflow-hidden">
                 {filteredItems.map((item, index) => (
                   <div
                     key={item.id}
