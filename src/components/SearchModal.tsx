@@ -6,12 +6,29 @@ import { X, Search, TrendingUp, Clock } from 'lucide-react'
 interface SearchModalProps {
   isOpen: boolean
   onClose: () => void
+  searchType: string
+  placeholder: string
 }
 
-export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
+export default function SearchModal({ isOpen, onClose, searchType, placeholder }: SearchModalProps) {
   const [searchTerm, setSearchTerm] = useState('')
-  const [recentSearches] = useState(['사과', '바나나', '우유', '빵', '계란'])
-  const [popularSearches] = useState(['올리브오일', '양파', '토마토', '닭가슴살', '쌀'])
+  
+  // 검색 타입에 따른 최근 검색어와 인기 검색어
+  const getSearchData = () => {
+    if (searchType === '레시피 검색') {
+      return {
+        recent: ['아보카도 토스트', '퀴노아 샐러드', '연어 스테이크', '오트밀', '닭가슴살'],
+        popular: ['건강한 아침식사', '다이어트 레시피', '고단백 요리', '비건 레시피', '간편 요리']
+      }
+    } else {
+      return {
+        recent: ['사과', '바나나', '우유', '빵', '계란'],
+        popular: ['올리브오일', '양파', '토마토', '닭가슴살', '쌀']
+      }
+    }
+  }
+
+  const { recent: recentSearches, popular: popularSearches } = getSearchData()
 
   if (!isOpen) return null
 
@@ -36,7 +53,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
       >
         {/* 헤더 */}
         <div className="flex items-center justify-between p-4 border-b border-gray-200">
-          <h2 className="text-xl font-bold text-gray-900">상품 검색</h2>
+          <h2 className="text-xl font-bold text-gray-900">{searchType}</h2>
           <button
             onClick={onClose}
             className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
@@ -53,7 +70,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="상품명을 검색하세요..."
+              placeholder={placeholder}
               className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
               autoFocus
             />
