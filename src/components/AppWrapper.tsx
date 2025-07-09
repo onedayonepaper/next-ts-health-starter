@@ -23,6 +23,12 @@ export default function AppWrapper({ children }: AppWrapperProps) {
         searchType: '레시피 검색',
         placeholder: '레시피를 검색하세요...'
       }
+    } else if (pathname.startsWith('/shopping')) {
+      return {
+        title: '건강한 쇼핑',
+        searchType: '쇼핑상품검색',
+        placeholder: '상품명을 검색하세요...'
+      }
     } else {
       return {
         title: '건강한 라이프스타일',
