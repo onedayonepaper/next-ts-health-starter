@@ -6,19 +6,54 @@ import { X, Search, TrendingUp, Clock } from 'lucide-react'
 interface SearchModalProps {
   isOpen: boolean
   onClose: () => void
+  searchType?: 'integrated' | 'recipe' | 'product'
 }
 
-export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
+export default function SearchModal({ isOpen, onClose, searchType = 'product' }: SearchModalProps) {
   const [searchTerm, setSearchTerm] = useState('')
-  const [recentSearches] = useState(['사과', '바나나', '우유', '빵', '계란'])
-  const [popularSearches] = useState(['올리브오일', '양파', '토마토', '닭가슴살', '쌀'])
+  
+  // 검색 타입별 설정
+  const getSearchConfig = () => {
+    switch (searchType) {
+      case 'integrated':
+        return {
+          title: '통합 검색',
+          placeholder: '레시피나 상품을 검색하세요...',
+          recentSearches: ['건강 레시피', '다이어트 식단', '오트밀', '닭가슴살', '아보카도'],
+          popularSearches: ['단백질 레시피', '저칼로리 간식', '비타민 보충제', '홈트레이닝', '건강한 아침식사']
+        }
+      case 'recipe':
+        return {
+          title: '레시피 검색',
+          placeholder: '레시피를 검색하세요...',
+          recentSearches: ['아보카도 토스트', '퀴노아 샐러드', '연어 스테이크', '오트밀', '그릭요거트'],
+          popularSearches: ['간단한 아침식사', '고단백 요리', '다이어트 레시피', '건강한 간식', '저칼로리 요리']
+        }
+      case 'product':
+        return {
+          title: '상품 검색',
+          placeholder: '상품명을 검색하세요...',
+          recentSearches: ['사과', '바나나', '우유', '빵', '계란'],
+          popularSearches: ['올리브오일', '양파', '토마토', '닭가슴살', '쌀']
+        }
+      default:
+        return {
+          title: '상품 검색',
+          placeholder: '상품명을 검색하세요...',
+          recentSearches: ['사과', '바나나', '우유', '빵', '계란'],
+          popularSearches: ['올리브오일', '양파', '토마토', '닭가슴살', '쌀']
+        }
+    }
+  }
+
+  const config = getSearchConfig()
 
   if (!isOpen) return null
 
   const handleSearch = (term: string) => {
     setSearchTerm(term)
     // 여기에 실제 검색 로직을 추가할 수 있습니다.
-    console.log('검색어:', term)
+    console.log(`${config.title} - 검색어:`, term)
   }
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -36,7 +71,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
       >
         {/* 헤더 */}
         <div className="flex items-center justify-between p-4 border-b border-gray-200">
-          <h2 className="text-xl font-bold text-gray-900">상품 검색</h2>
+          <h2 className="text-xl font-bold text-gray-900">{config.title}</h2>
           <button
             onClick={onClose}
             className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
@@ -53,7 +88,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="상품명을 검색하세요..."
+              placeholder={config.placeholder}
               className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
               autoFocus
             />
@@ -68,7 +103,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
             <h3 className="font-semibold text-gray-900">최근 검색어</h3>
           </div>
           <div className="flex flex-wrap gap-2">
-            {recentSearches.map((search, index) => (
+            {config.recentSearches.map((search, index) => (
               <button
                 key={index}
                 onClick={() => handleSearch(search)}
@@ -87,7 +122,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
             <h3 className="font-semibold text-gray-900">인기 검색어</h3>
           </div>
           <div className="space-y-2">
-            {popularSearches.map((search, index) => (
+            {config.popularSearches.map((search, index) => (
               <button
                 key={index}
                 onClick={() => handleSearch(search)}
