@@ -17,13 +17,13 @@ export default function Home() {
               </span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              건강한 식단 관리와 스마트한 쇼핑을 위한 올인원 플랫폼
+              건강한 식단, 스마트한 쇼핑, 체계적인 일정 관리를 위한 올인원 플랫폼
             </p>
             <div className="w-24 h-1 bg-gradient-to-r from-emerald-500 to-teal-500 mx-auto rounded-full"></div>
           </div>
 
           {/* Main Navigation Cards */}
-          <div className="grid md:grid-cols-2 gap-8 mb-16">
+          <div className="grid md:grid-cols-3 gap-8 mb-16">
             {/* Recipe Service Card */}
             <Link href="/recipe" className="group">
               <div className="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 group-hover:scale-105 border border-gray-100">
@@ -105,6 +105,47 @@ export default function Home() {
                 </div>
               </div>
             </Link>
+
+            {/* Schedule Management Card */}
+            <Link href="/schedule" className="group">
+              <div className="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 group-hover:scale-105 border border-gray-100">
+                <div className="text-center">
+                  <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl flex items-center justify-center group-hover:from-purple-200 group-hover:to-pink-200 transition-colors">
+                    <span className="text-4xl">📅</span>
+                  </div>
+                  <h2 className="text-3xl font-bold text-gray-900 mb-4">건강한 일정</h2>
+                  <p className="text-gray-600 mb-6 text-lg">
+                    체계적인 건강 관리를 위한 일정을 계획하고 추적하세요
+                  </p>
+                  <div className="space-y-3 text-left">
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                      <span className="text-gray-700">운동 및 건강 활동</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                      <span className="text-gray-700">일정별 난이도 표시</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                      <span className="text-gray-700">소요시간 추적</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                      <span className="text-gray-700">건강 관리 팁</span>
+                    </div>
+                  </div>
+                  <div className="mt-8">
+                    <div className="inline-flex items-center gap-2 text-purple-600 font-semibold group-hover:text-purple-700 transition-colors">
+                      일정 관리하기
+                      <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Link>
           </div>
 
           {/* Features Section */}
@@ -145,7 +186,7 @@ export default function Home() {
           <div className="text-center bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl p-12 text-white">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">건강한 생활을 시작해보세요!</h2>
             <p className="text-xl mb-8 opacity-90">
-              지금 바로 레시피를 탐색하거나 구매목록을 만들어보세요
+              지금 바로 레시피 탐색, 구매목록 작성, 건강 일정 관리를 시작해보세요
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link 
@@ -161,6 +202,13 @@ export default function Home() {
               >
                 <span className="text-xl">🛒</span>
                 쇼핑 리스트 만들기
+              </Link>
+              <Link 
+                href="/schedule" 
+                className="bg-white text-emerald-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-flex items-center justify-center gap-2"
+              >
+                <span className="text-xl">📅</span>
+                건강한 일정 관리
               </Link>
             </div>
           </div>
