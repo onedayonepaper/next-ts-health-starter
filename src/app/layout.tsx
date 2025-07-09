@@ -1,12 +1,7 @@
-'use client'
-
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
-import { useState } from 'react'
-import Header from '../components/Header'
-import MobileMenu from '../components/MobileMenu'
-import SearchModal from '../components/SearchModal'
+import AppWrapper from '../components/AppWrapper'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -21,25 +16,12 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
-
   return (
     <html lang="ko">
       <body className={inter.className}>
-        <Header 
-          onMenuClick={() => setIsMenuOpen(true)}
-          onSearchClick={() => setIsSearchOpen(true)}
-        />
-        <MobileMenu 
-          isOpen={isMenuOpen}
-          onClose={() => setIsMenuOpen(false)}
-        />
-        <SearchModal 
-          isOpen={isSearchOpen}
-          onClose={() => setIsSearchOpen(false)}
-        />
-        {children}
+        <AppWrapper>
+          {children}
+        </AppWrapper>
         <Toaster 
           position="top-right"
           toastOptions={{
