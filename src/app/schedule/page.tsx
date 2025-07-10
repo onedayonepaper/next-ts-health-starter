@@ -250,7 +250,7 @@ export default function SchedulePage() {
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-green-50 to-blue-100">
-      <div className="container mx-auto px-3 sm:px-4 py-8 sm:py-16">
+      <div className="container mx-auto">
         <div className="max-w-6xl mx-auto">
           {/* Header removed - back button moved to bottom */}
 
@@ -492,17 +492,6 @@ export default function SchedulePage() {
               </div>
             ) : (
               <div className="bg-white overflow-hidden rounded-lg shadow-lg">
-                {/* Table Header */}
-                <div className="bg-gray-50 px-3 sm:px-4 py-3 sm:py-4 border-b border-gray-200">
-                  <div className="flex items-center gap-3 sm:gap-4 w-full">
-                    <span className="text-sm font-semibold text-gray-700 w-5 text-center flex-shrink-0">완료</span>
-                    <span className="text-sm font-semibold text-gray-700 w-6 text-center flex-shrink-0">No.</span>
-                    <span className="text-sm font-semibold text-gray-700 w-8 text-center flex-shrink-0">아이콘</span>
-                    <span className="text-sm font-semibold text-gray-700 flex-1">일정명</span>
-                    <span className="text-sm font-semibold text-gray-700 w-6 text-center flex-shrink-0">상세</span>
-                  </div>
-                </div>
-                
                 {/* Table Body */}
                 {filteredItems.map((item, index) => (
                   <div
