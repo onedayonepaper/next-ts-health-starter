@@ -498,14 +498,6 @@ export default function SchedulePage() {
               <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-2">
                 건강한 일정 목록
               </h2>
-              <p className="text-sm sm:text-base text-gray-600">
-                오늘은 <span className="font-semibold text-green-600">{isWeekday() ? '평일' : '주말'}</span>입니다. 
-                {selectedFrequency !== "전체" && (
-                  <span className="ml-1">
-                    ({selectedFrequency} 일정만 표시 중)
-                  </span>
-                )}
-              </p>
             </div>
             
             {filteredItems.length === 0 ? (
