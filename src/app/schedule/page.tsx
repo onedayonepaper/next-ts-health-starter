@@ -476,11 +476,11 @@ export default function SchedulePage() {
             </div>
           )}
 
-          {/* Schedule Items - Simple Table Layout */}
+          {/* Schedule Items - Table with Header */}
           <div className="mb-6 sm:mb-8">
             <div className="mb-4 sm:mb-6">
               <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-2">
-
+                건강한 일정 목록
               </h2>
             </div>
             
@@ -491,12 +491,24 @@ export default function SchedulePage() {
                 <p className="text-sm sm:text-base text-gray-600">필터 조건을 조정해보세요.</p>
               </div>
             ) : (
-              <div className="bg-white overflow-hidden">
+              <div className="bg-white overflow-hidden rounded-lg shadow-lg">
+                {/* Table Header */}
+                <div className="bg-gray-50 px-3 sm:px-4 py-3 sm:py-4 border-b border-gray-200">
+                  <div className="flex items-center gap-3 sm:gap-4 w-full">
+                    <span className="text-sm font-semibold text-gray-700 w-5 text-center flex-shrink-0">완료</span>
+                    <span className="text-sm font-semibold text-gray-700 w-6 text-center flex-shrink-0">No.</span>
+                    <span className="text-sm font-semibold text-gray-700 w-8 text-center flex-shrink-0">아이콘</span>
+                    <span className="text-sm font-semibold text-gray-700 flex-1">일정명</span>
+                    <span className="text-sm font-semibold text-gray-700 w-6 text-center flex-shrink-0">상세</span>
+                  </div>
+                </div>
+                
+                {/* Table Body */}
                 {filteredItems.map((item, index) => (
                   <div
                     key={item.id}
                     onClick={() => handleItemClick(item)}
-                    className={`flex items-center gap-3 sm:gap-4 p-3 sm:p-4 hover:bg-gray-50 cursor-pointer transition-all border-b border-gray-200 last:border-b-0 ${
+                    className={`flex items-center gap-3 sm:gap-4 p-3 sm:p-4 hover:bg-gray-50 cursor-pointer transition-all border-b border-gray-200 last:border-b-0 w-full ${
                       item.completed ? 'bg-green-50 opacity-70' : ''
                     }`}
                   >
@@ -522,7 +534,7 @@ export default function SchedulePage() {
                     </span>
                     
                     {/* Icon */}
-                    <span className={`text-xl sm:text-2xl flex-shrink-0 ${item.completed ? 'grayscale' : ''}`}>
+                    <span className={`text-xl sm:text-2xl w-8 text-center flex-shrink-0 ${item.completed ? 'grayscale' : ''}`}>
                       {item.icon}
                     </span>
                     
@@ -541,7 +553,7 @@ export default function SchedulePage() {
                     </div>
                     
                     {/* Arrow */}
-                    <svg className="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 text-gray-400 w-6 text-center flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                   </div>

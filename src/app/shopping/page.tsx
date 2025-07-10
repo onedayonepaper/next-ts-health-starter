@@ -353,11 +353,11 @@ export default function ShoppingPage() {
             </div>
           )}
 
-          {/* Shopping Items - Simple Table Layout */}
+          {/* Shopping Items - Table with Header */}
           <div className="mb-6 sm:mb-8">
             <div className="mb-4 sm:mb-6">
               <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-2">
-
+                건강한 쇼핑 목록
               </h2>
             </div>
             
@@ -368,12 +368,23 @@ export default function ShoppingPage() {
                 <p className="text-sm sm:text-base text-gray-600">필터 조건을 조정해보세요.</p>
               </div>
             ) : (
-              <div className="bg-white overflow-hidden">
+              <div className="bg-white overflow-hidden rounded-lg shadow-lg">
+                {/* Table Header */}
+                <div className="bg-gray-50 px-3 sm:px-4 py-3 sm:py-4 border-b border-gray-200">
+                  <div className="flex items-center gap-3 sm:gap-4 w-full">
+                    <span className="text-sm font-semibold text-gray-700 w-6 text-center flex-shrink-0">No.</span>
+                    <span className="text-sm font-semibold text-gray-700 w-8 text-center flex-shrink-0">아이콘</span>
+                    <span className="text-sm font-semibold text-gray-700 flex-1">상품명</span>
+                    <span className="text-sm font-semibold text-gray-700 w-6 text-center flex-shrink-0">상세</span>
+                  </div>
+                </div>
+                
+                {/* Table Body */}
                 {filteredItems.map((item, index) => (
                   <div
                     key={item.id}
                     onClick={() => handleItemClick(item)}
-                    className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 hover:bg-gray-50 cursor-pointer transition-all border-b border-gray-200 last:border-b-0"
+                    className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 hover:bg-gray-50 cursor-pointer transition-all border-b border-gray-200 last:border-b-0 w-full"
                   >
                     {/* Row Number */}
                     <span className="text-sm text-gray-400 w-6 text-center flex-shrink-0">
@@ -381,7 +392,7 @@ export default function ShoppingPage() {
                     </span>
                     
                     {/* Icon */}
-                    <span className="text-xl sm:text-2xl flex-shrink-0">{item.icon}</span>
+                    <span className="text-xl sm:text-2xl w-8 text-center flex-shrink-0">{item.icon}</span>
                     
                     {/* Item Name */}
                     <div className="flex-1 min-w-0">
@@ -391,7 +402,7 @@ export default function ShoppingPage() {
                     </div>
                     
                     {/* Arrow */}
-                    <svg className="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 text-gray-400 w-6 text-center flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                   </div>
