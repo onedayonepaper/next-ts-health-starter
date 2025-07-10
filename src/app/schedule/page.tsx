@@ -494,11 +494,6 @@ export default function SchedulePage() {
 
           {/* Schedule Items - Table with Header */}
           <div className="mb-6 sm:mb-8">
-            <div className="mb-4 sm:mb-6">
-              <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-2">
-                건강한 일정 목록
-              </h2>
-            </div>
             
             {filteredItems.length === 0 ? (
               <div className="text-center py-8 sm:py-12 bg-gray-50 rounded-lg">
