@@ -35,7 +35,7 @@ export default function SearchModal({ isOpen, onClose, searchType, placeholder }
   const handleSearch = (term: string) => {
     setSearchTerm(term)
     // 여기에 실제 검색 로직을 추가할 수 있습니다.
-    console.log('검색어:', term)
+    // console.log('검색어:', term)
   }
 
   const handleSubmit = (e: React.FormEvent) => {

@@ -353,14 +353,14 @@ export default function SchedulePage() {
                                 ? "bg-purple-600 text-white"
                                 : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                             } ${
-                              frequency === (isWeekday() ? "평일" : "주말") && frequency !== "전체"
+                              frequency !== "전체" && frequency === (isWeekday() ? "평일" : "주말")
                                 ? "ring-2 ring-purple-300"
                                 : ""
                             }`}
                           >
                             {frequency !== "전체" && getFrequencyIcon(frequency)}
                             {frequency}
-                            {frequency === (isWeekday() ? "평일" : "주말") && frequency !== "전체" && (
+                            {frequency !== "전체" && frequency === (isWeekday() ? "평일" : "주말") && (
                               <span className="text-xs ml-1">(오늘)</span>
                             )}
                           </button>
