@@ -3,6 +3,12 @@
 import React, { useState, useMemo } from 'react'
 import Link from 'next/link'
 
+// 현재 날짜가 평일인지 주말인지 판단하는 함수
+const isWeekday = () => {
+  const day = new Date().getDay()
+  return day !== 0 && day !== 6 // 0: 일요일, 6: 토요일
+}
+
 // Schedule item interface
 interface ScheduleItem {
   id: number
@@ -181,7 +187,8 @@ export default function SchedulePage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("전체")
   const [selectedLocation, setSelectedLocation] = useState("전체")
-  const [selectedFrequency, setSelectedFrequency] = useState("전체")
+  // 현재 날짜에 따라 평일/주말 필터 자동 설정
+  const [selectedFrequency, setSelectedFrequency] = useState(isWeekday() ? "평일" : "주말")
   const [maxDuration, setMaxDuration] = useState(120)
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false)
   const [items, setItems] = useState(scheduleItems)
@@ -205,7 +212,7 @@ export default function SchedulePage() {
     setSearchTerm("")
     setSelectedCategory("전체")
     setSelectedLocation("전체")
-    setSelectedFrequency("전체")
+    setSelectedFrequency(isWeekday() ? "평일" : "주말") // 현재 날짜에 맞게 초기화
     setMaxDuration(120)
   }
 
@@ -333,7 +340,9 @@ export default function SchedulePage() {
 
                     {/* Frequency Filter */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">빈도</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        빈도 {isWeekday() ? "(오늘: 평일)" : "(오늘: 주말)"}
+                      </label>
                       <div className="flex flex-wrap gap-2">
                         {["전체", "평일", "주말"].map((frequency) => (
                           <button
@@ -343,10 +352,17 @@ export default function SchedulePage() {
                               selectedFrequency === frequency
                                 ? "bg-purple-600 text-white"
                                 : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                            } ${
+                              frequency !== "전체" && frequency === (isWeekday() ? "평일" : "주말")
+                                ? "ring-2 ring-purple-300"
+                                : ""
                             }`}
                           >
                             {frequency !== "전체" && getFrequencyIcon(frequency)}
                             {frequency}
+                            {frequency !== "전체" && frequency === (isWeekday() ? "평일" : "주말") && (
+                              <span className="text-xs ml-1">(오늘)</span>
+                            )}
                           </button>
                         ))}
                       </div>
@@ -482,6 +498,14 @@ export default function SchedulePage() {
               <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-2">
                 건강한 일정 목록
               </h2>
+              <p className="text-sm sm:text-base text-gray-600">
+                오늘은 <span className="font-semibold text-green-600">{isWeekday() ? '평일' : '주말'}</span>입니다. 
+                {selectedFrequency !== "전체" && (
+                  <span className="ml-1">
+                    ({selectedFrequency} 일정만 표시 중)
+                  </span>
+                )}
+              </p>
             </div>
             
             {filteredItems.length === 0 ? (
@@ -534,10 +558,17 @@ export default function SchedulePage() {
                       }`}>
                         {item.title}
                       </h3>
-                      <p className={`text-xs sm:text-sm mt-1 ${
+                      <p className={`text-xs sm:text-sm mt-1 flex items-center gap-2 ${
                         item.completed ? 'text-gray-400' : 'text-gray-500'
                       }`}>
-                        {item.time} • {item.duration_minutes}분 • {item.frequency}
+                        <span>{item.time} • {item.duration_minutes}분</span>
+                        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
+                          item.frequency === "평일" 
+                            ? "bg-blue-100 text-blue-700" 
+                            : "bg-orange-100 text-orange-700"
+                        }`}>
+                          {getFrequencyIcon(item.frequency)} {item.frequency}
+                        </span>
                       </p>
                     </div>
                     
