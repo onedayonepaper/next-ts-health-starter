@@ -29,6 +29,12 @@ export default function AppWrapper({ children }: AppWrapperProps) {
         searchType: '쇼핑상품검색',
         placeholder: '상품명을 검색하세요...'
       }
+    } else if (pathname.startsWith('/schedule')) {
+      return {
+        title: '건강한 일정',
+        searchType: '일정 검색',
+        placeholder: '일정을 검색하세요...'
+      }
     } else {
       return {
         title: '건강한 라이프스타일',
