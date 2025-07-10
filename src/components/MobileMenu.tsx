@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { X, Home, ChefHat, ShoppingCart, User, Settings } from 'lucide-react'
+import { X, Home, ChefHat, ShoppingCart, Calendar, User, Settings } from 'lucide-react'
 import Link from 'next/link'
 
 interface MobileMenuProps {
@@ -58,6 +58,15 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             >
               <ShoppingCart className="w-5 h-5" />
               <span className="font-medium">쇼핑 리스트</span>
+            </Link>
+            
+            <Link 
+              href="/schedule"
+              onClick={onClose}
+              className="flex items-center gap-3 p-3 text-gray-700 hover:bg-emerald-50 hover:text-emerald-600 rounded-lg transition-colors"
+            >
+              <Calendar className="w-5 h-5" />
+              <span className="font-medium">건강한 일정</span>
             </Link>
             
             <div className="border-t border-gray-200 my-4"></div>
