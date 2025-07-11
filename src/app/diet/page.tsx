@@ -9,7 +9,7 @@ const dietData = {
   success: true,
   data: [
     {
-      day: "월요일",
+      day: "월",
       meals: [
         {
           meal_type: "아침",
@@ -26,7 +26,7 @@ const dietData = {
       ]
     },
     {
-      day: "화요일",
+      day: "화",
       meals: [
         {
           meal_type: "아침",
@@ -43,7 +43,7 @@ const dietData = {
       ]
     },
     {
-      day: "수요일",
+      day: "수",
       meals: [
         {
           meal_type: "아침",
@@ -60,7 +60,7 @@ const dietData = {
       ]
     },
     {
-      day: "목요일",
+      day: "목",
       meals: [
         {
           meal_type: "아침",
@@ -77,7 +77,7 @@ const dietData = {
       ]
     },
     {
-      day: "금요일",
+      day: "금",
       meals: [
         {
           meal_type: "아침",
@@ -158,7 +158,7 @@ export default function DietPage() {
                       : 'text-gray-600 hover:bg-white/50'
                   }`}
                 >
-                  {day}요일
+                  {day}
                 </button>
               ))}
             </div>
