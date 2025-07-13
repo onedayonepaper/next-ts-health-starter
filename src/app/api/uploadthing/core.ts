@@ -1,12 +1,18 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
+import { uploadthingConfig } from "@/lib/config";
 
 const f = createUploadthing();
 
 // FileRouter for your app, can contain multiple FileRoutes
 export const ourFileRouter = {
   // Define as many FileRoutes as you like, each with a unique routeSlug
-  videoUploader: f({ video: { maxFileSize: "512MB", maxFileCount: 1 } })
+  videoUploader: f({ 
+    video: { 
+      maxFileSize: uploadthingConfig.maxFileSize, 
+      maxFileCount: uploadthingConfig.maxFileCount 
+    } 
+  })
     // Set permissions and file types for this FileRoute
     .middleware(async ({ req }) => {
       // This code runs on your server before upload
