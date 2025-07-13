@@ -55,6 +55,18 @@ export default function VideoUploadPage() {
                 }}
               />
               
+              {/* 파일 업로드 정보 */}
+              <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <div className="text-sm text-blue-800 space-y-2">
+                  <div>
+                    <span className="font-semibold">지원 확장자:</span> .mp4 · .mov · .webm · .mkv · .avi · .wmv
+                  </div>
+                  <div>
+                    <span className="font-semibold">최대 용량:</span> 512 MB
+                  </div>
+                </div>
+              </div>
+              
               {uploadedVideoUrl && (
                 <div className="mt-6 p-4 bg-green-100 rounded-lg max-w-md">
                   <p className="text-green-800 text-sm">
