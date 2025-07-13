@@ -1,36 +1,56 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
+
 import { UploadThingError } from "uploadthing/server";
 import { uploadthingConfig } from "@/lib/config";
+
 
 const f = createUploadthing();
 
 // FileRouter for your app, can contain multiple FileRoutes
 export const ourFileRouter = {
   // Define as many FileRoutes as you like, each with a unique routeSlug
+
   videoUploader: f({ 
     video: { 
       maxFileSize: uploadthingConfig.maxFileSize, 
       maxFileCount: uploadthingConfig.maxFileCount 
     } 
+
+  videoUploader: f({
+    video: { 
+      maxFileSize: "128MB", 
+      maxFileCount: 1
+    },
+
   })
     // Set permissions and file types for this FileRoute
-    .middleware(async ({ req }) => {
+    .middleware(async () => {
       // This code runs on your server before upload
-      // You can check authentication here if needed
-      // const user = await auth(req);
-      // if (!user) throw new UploadThingError("Unauthorized");
-
-      // Whatever is returned here is accessible in onUploadComplete as `metadata`
-      return { uploadedAt: new Date().toISOString() };
+      // You can authenticate here if needed
+      
+      // For now, we'll allow all uploads
+      // In production, you might want to check user authentication here
+      
+      return { 
+        // Whatever is returned here is accessible in onUploadComplete as `metadata`
+        uploadedAt: new Date().toISOString()
+      };
     })
     .onUploadComplete(async ({ metadata, file }) => {
       // This code RUNS ON YOUR SERVER after upload
-      console.log("Upload complete for file:", file.name);
-      console.log("File url", file.url);
-      console.log("Metadata", metadata);
-
-      // Return anything to be sent back to the client
-      return { uploadedBy: metadata.uploadedAt, url: file.url };
+      console.log("Upload complete for userId:", metadata.uploadedAt);
+      console.log("file url", file.url);
+      console.log("file name", file.name);
+      console.log("file size", file.size);
+      
+      // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
+      return { 
+        uploadedBy: metadata.uploadedAt,
+        url: file.url,
+        name: file.name,
+        size: file.size,
+        key: file.key
+      };
     }),
 } satisfies FileRouter;
 
