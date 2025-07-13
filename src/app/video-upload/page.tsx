@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
-import { UploadButton } from '@/lib/uploadthing'
+import { UploadButton } from '@/utils/uploadthing'
 
 export default function VideoUploadPage() {
   const [uploadedVideoUrl, setUploadedVideoUrl] = useState<string | null>(null)
