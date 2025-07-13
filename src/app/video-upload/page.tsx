@@ -44,7 +44,7 @@ export default function VideoUploadPage() {
                 }}
                 content={{
                   button({ ready }) {
-                    if (ready) return <div>🎥 영상 선택하기</div>;
+                    if (ready) return <div>🎥 영상선택</div>;
                     return <div>준비 중...</div>;
                   },
                   allowedContent({ ready, fileTypes, isUploading }) {
