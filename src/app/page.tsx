@@ -72,6 +72,18 @@ export default function Home() {
                 </div>
               </div>
             </Link>
+
+            {/* Certificate Card */}
+            <Link href="/certificate" className="group">
+              <div className="bg-white/30 backdrop-blur-sm rounded-xl p-4 md:p-6 shadow-lg hover:shadow-xl transition-all duration-300 group-hover:scale-105 border border-white/20">
+                <div className="text-center">
+                  <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 md:mb-4 bg-gradient-to-br from-amber-100 to-orange-100 rounded-xl flex items-center justify-center group-hover:from-amber-200 group-hover:to-orange-200 transition-colors">
+                    <span className="text-2xl md:text-3xl">🏆</span>
+                  </div>
+                  <h2 className="text-sm md:text-lg font-bold text-gray-900">수료증 만들기</h2>
+                </div>
+              </div>
+            </Link>
           </div>
         </div>
       </div>
