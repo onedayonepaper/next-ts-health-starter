@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>수료증 - 엘레강트 스타일</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Song+Myung&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Song Myung', serif;
+            background-color: #f9f9f9;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .certificate-wrapper {
+            background-color: #fffef9;
+            width: 850px;
+            height: 600px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .certificate {
+            padding: 50px 70px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+        
+        /* 전통적인 문양 테두리 */
+        .traditional-border {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            border: 2px solid #8b4513;
+            background: 
+                linear-gradient(to right, #8b4513 0%, transparent 5%, transparent 95%, #8b4513 100%),
+                linear-gradient(to bottom, #8b4513 0%, transparent 5%, transparent 95%, #8b4513 100%);
+            background-size: 100% 2px, 2px 100%;
+            background-position: top, left;
+            background-repeat: no-repeat;
+        }
+        
+        /* 모서리 장식 */
+        .corner-ornament {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border: 2px solid #8b4513;
+        }
+        
+        .corner-ornament::before,
+        .corner-ornament::after {
+            content: '';
+            position: absolute;
+            background-color: #8b4513;
+        }
+        
+        .corner-ornament.top-left {
+            top: 10px;
+            left: 10px;
+            border-right: none;
+            border-bottom: none;
+        }
+        
+        .corner-ornament.top-left::before {
+            width: 20px;
+            height: 2px;
+            top: 10px;
+            left: 10px;
+        }
+        
+        .corner-ornament.top-left::after {
+            width: 2px;
+            height: 20px;
+            top: 10px;
+            left: 10px;
+        }
+        
+        .corner-ornament.top-right {
+            top: 10px;
+            right: 10px;
+            border-left: none;
+            border-bottom: none;
+        }
+        
+        .corner-ornament.top-right::before {
+            width: 20px;
+            height: 2px;
+            top: 10px;
+            right: 10px;
+        }
+        
+        .corner-ornament.top-right::after {
+            width: 2px;
+            height: 20px;
+            top: 10px;
+            right: 10px;
+        }
+        
+        .corner-ornament.bottom-left {
+            bottom: 10px;
+            left: 10px;
+            border-right: none;
+            border-top: none;
+        }
+        
+        .corner-ornament.bottom-left::before {
+            width: 20px;
+            height: 2px;
+            bottom: 10px;
+            left: 10px;
+        }
+        
+        .corner-ornament.bottom-left::after {
+            width: 2px;
+            height: 20px;
+            bottom: 10px;
+            left: 10px;
+        }
+        
+        .corner-ornament.bottom-right {
+            bottom: 10px;
+            right: 10px;
+            border-left: none;
+            border-top: none;
+        }
+        
+        .corner-ornament.bottom-right::before {
+            width: 20px;
+            height: 2px;
+            bottom: 10px;
+            right: 10px;
+        }
+        
+        .corner-ornament.bottom-right::after {
+            width: 2px;
+            height: 20px;
+            bottom: 10px;
+            right: 10px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .certificate-number {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+        
+        .title {
+            font-size: 60px;
+            font-weight: normal;
+            color: #2c1810;
+            letter-spacing: 30px;
+            margin-bottom: 5px;
+            text-indent: 30px;
+        }
+        
+        .subtitle-chinese {
+            font-size: 24px;
+            color: #8b4513;
+            letter-spacing: 10px;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle-english {
+            font-size: 16px;
+            color: #999;
+            font-style: italic;
+            letter-spacing: 2px;
+        }
+        
+        .content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .recipient-info {
+            margin-bottom: 30px;
+            padding: 20px 40px;
+            background-color: rgba(139, 69, 19, 0.03);
+            border-radius: 5px;
+        }
+        
+        .info-row {
+            display: flex;
+            margin-bottom: 18px;
+            font-size: 19px;
+            align-items: baseline;
+        }
+        
+        .info-label {
+            width: 100px;
+            color: #4a3020;
+            letter-spacing: 3px;
+        }
+        
+        .info-value {
+            flex-grow: 1;
+            color: #2c1810;
+            padding-bottom: 3px;
+            border-bottom: 1px dashed #d2a679;
+            margin-left: 20px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        
+        .certificate-text {
+            text-align: center;
+            font-size: 22px;
+            line-height: 2.2;
+            color: #2c1810;
+            margin: 30px 0;
+            letter-spacing: 3px;
+        }
+        
+        .footer {
+            text-align: center;
+        }
+        
+        .date {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #4a3020;
+            letter-spacing: 5px;
+        }
+        
+        .issuer-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+        }
+        
+        .issuer {
+            font-size: 26px;
+            color: #2c1810;
+            letter-spacing: 8px;
+        }
+        
+        .seal-container {
+            position: relative;
+        }
+        
+        .traditional-seal {
+            width: 90px;
+            height: 90px;
+            border: 4px solid #cd3333;
+            position: relative;
+            transform: rotate(3deg);
+        }
+        
+        .traditional-seal::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border: 2px solid #cd3333;
+        }
+        
+        .seal-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 16px;
+            color: #cd3333;
+            font-weight: bold;
+            text-align: center;
+            line-height: 1.3;
+            letter-spacing: 2px;
+        }
+        
+        .handwritten-name {
+            font-family: 'Nanum Pen Script', cursive;
+            font-size: 36px;
+            color: #2c1810;
+            margin-top: -10px;
+        }
+        
+        .background-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.02;
+            background-image: 
+                repeating-linear-gradient(
+                    45deg,
+                    #8b4513,
+                    #8b4513 1px,
+                    transparent 1px,
+                    transparent 15px
+                ),
+                repeating-linear-gradient(
+                    -45deg,
+                    #8b4513,
+                    #8b4513 1px,
+                    transparent 1px,
+                    transparent 15px
+                );
+            pointer-events: none;
+        }
+        
+        @media print {
+            body {
+                background-color: white;
+                padding: 0;
+            }
+            
+            .certificate-wrapper {
+                box-shadow: none;
+                width: 100%;
+                height: 100vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="certificate-wrapper">
+        <div class="traditional-border"></div>
+        <div class="corner-ornament top-left"></div>
+        <div class="corner-ornament top-right"></div>
+        <div class="corner-ornament bottom-left"></div>
+        <div class="corner-ornament bottom-right"></div>
+        <div class="background-pattern"></div>
+        
+        <div class="certificate">
+            <div class="header">
+                <div class="certificate-number">第 0000 號</div>
+                <h1 class="title">修了證</h1>
+                <div class="subtitle-chinese">수 료 증</div>
+                <div class="subtitle-english">Certificate of Completion</div>
+            </div>
+            
+            <div class="content">
+                <div class="recipient-info">
+                    <div class="info-row">
+                        <span class="info-label">성　명</span>
+                        <span class="info-value">김영희</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">생년월일</span>
+                        <span class="info-value"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">소　속</span>
+                        <span class="info-value">(주)○○닷컴</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">과정명</span>
+                        <span class="info-value">안전관리자 업무능력개발</span>
+                    </div>
+                </div>
+                
+                <div class="certificate-text">
+                    위 사람은 ○○협회 ○○교육훈련과정을<br>
+                    성실히 수료하였기에 이 증서를<br>
+                    수여합니다.
+                </div>
+            </div>
+            
+            <div class="footer">
+                <div class="date">二〇二四年 十二月 三十日</div>
+                <div class="issuer-container">
+                    <div>
+                        <div class="issuer">○○協會 會長</div>
+                        <div class="handwritten-name">김철수</div>
+                    </div>
+                    <div class="seal-container">
+                        <div class="traditional-seal">
+                            <div class="seal-text">○○協會<br>會長<br>之印</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

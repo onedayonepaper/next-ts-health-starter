@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>수료증</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Nanum Myeongjo', serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .certificate-wrapper {
+            background-color: white;
+            width: 800px;
+            height: 600px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .certificate {
+            padding: 60px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
+            position: relative;
+        }
+        
+        .border-frame {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            border: 3px solid #d4af36;
+            pointer-events: none;
+        }
+        
+        .corner-decoration {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border: 2px solid #d4af36;
+        }
+        
+        .corner-decoration.top-left {
+            top: 10px;
+            left: 10px;
+            border-right: none;
+            border-bottom: none;
+        }
+        
+        .corner-decoration.top-right {
+            top: 10px;
+            right: 10px;
+            border-left: none;
+            border-bottom: none;
+        }
+        
+        .corner-decoration.bottom-left {
+            bottom: 10px;
+            left: 10px;
+            border-right: none;
+            border-top: none;
+        }
+        
+        .corner-decoration.bottom-right {
+            bottom: 10px;
+            right: 10px;
+            border-left: none;
+            border-top: none;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .certificate-number {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .title {
+            font-size: 48px;
+            font-weight: 800;
+            color: #2c3e50;
+            letter-spacing: 15px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            font-size: 20px;
+            color: #7f8c8d;
+            letter-spacing: 5px;
+        }
+        
+        .content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .recipient-info {
+            margin-bottom: 40px;
+            line-height: 2.2;
+        }
+        
+        .info-row {
+            display: flex;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .info-label {
+            width: 120px;
+            font-weight: 700;
+            color: #34495e;
+        }
+        
+        .info-value {
+            flex-grow: 1;
+            border-bottom: 1px solid #bdc3c7;
+            padding-left: 10px;
+            color: #2c3e50;
+        }
+        
+        .certificate-text {
+            text-align: center;
+            font-size: 20px;
+            line-height: 2;
+            color: #2c3e50;
+            margin: 40px 0;
+            letter-spacing: 2px;
+        }
+        
+        .footer {
+            text-align: center;
+        }
+        
+        .date {
+            font-size: 18px;
+            margin-bottom: 40px;
+            color: #34495e;
+            letter-spacing: 3px;
+        }
+        
+        .issuer {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            letter-spacing: 5px;
+        }
+        
+        .signature-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .seal {
+            width: 80px;
+            height: 80px;
+            border: 3px solid #e74c3c;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: #e74c3c;
+            text-align: center;
+            line-height: 1.2;
+        }
+        
+        .signature {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2c3e50;
+            font-style: italic;
+        }
+        
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 120px;
+            color: rgba(212, 175, 54, 0.05);
+            font-weight: 800;
+            letter-spacing: 20px;
+            pointer-events: none;
+        }
+        
+        @media print {
+            body {
+                background-color: white;
+                padding: 0;
+            }
+            
+            .certificate-wrapper {
+                box-shadow: none;
+                width: 100%;
+                height: 100vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="certificate-wrapper">
+        <div class="border-frame"></div>
+        <div class="corner-decoration top-left"></div>
+        <div class="corner-decoration top-right"></div>
+        <div class="corner-decoration bottom-left"></div>
+        <div class="corner-decoration bottom-right"></div>
+        <div class="watermark">수료증</div>
+        
+        <div class="certificate">
+            <div class="header">
+                <div class="certificate-number">제 0000 호</div>
+                <h1 class="title">수 료 증</h1>
+                <div class="subtitle">CERTIFICATE OF COMPLETION</div>
+            </div>
+            
+            <div class="content">
+                <div class="recipient-info">
+                    <div class="info-row">
+                        <span class="info-label">성　　명 :</span>
+                        <span class="info-value">김영희</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">생년월일 :</span>
+                        <span class="info-value"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">소　　속 :</span>
+                        <span class="info-value">(주)○○닷컴</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">과 정 명 :</span>
+                        <span class="info-value">안전관리자 업무능력개발</span>
+                    </div>
+                </div>
+                
+                <div class="certificate-text">
+                    위 사람은 ○○협회 ○○교육훈련과정을<br>
+                    성실히 수료하였으므로 이 증서를<br>
+                    수여합니다.
+                </div>
+            </div>
+            
+            <div class="footer">
+                <div class="date">2024 년　12 월　30 일</div>
+                <div class="issuer">○○협회 회장</div>
+                <div class="signature-section">
+                    <div class="signature">김 철 수</div>
+                    <div class="seal">○○협회<br>회장<br>之印</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

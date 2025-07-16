@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>수료증 템플릿 선택</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 36px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            font-size: 18px;
+            color: #7f8c8d;
+            margin-bottom: 50px;
+        }
+        
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .template-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .template-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .template-preview {
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .template-preview.classic {
+            background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            color: #d4af36;
+            font-weight: 800;
+            letter-spacing: 15px;
+        }
+        
+        .template-preview.modern {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            color: white;
+            font-weight: 900;
+            letter-spacing: 10px;
+        }
+        
+        .template-preview.elegant {
+            background: #fffef9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            color: #8b4513;
+            letter-spacing: 20px;
+            font-family: 'Song Myung', serif;
+        }
+        
+        .template-info {
+            padding: 30px;
+        }
+        
+        .template-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .template-description {
+            font-size: 16px;
+            color: #7f8c8d;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .template-features {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+        
+        .template-features li {
+            padding: 5px 0;
+            color: #95a5a6;
+            font-size: 14px;
+        }
+        
+        .template-features li:before {
+            content: "✓ ";
+            color: #27ae60;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        
+        .view-button {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .view-button:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .instructions {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            margin-top: 50px;
+        }
+        
+        .instructions h2 {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .instructions p {
+            font-size: 16px;
+            color: #7f8c8d;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+        
+        .instructions ol {
+            margin-left: 20px;
+            color: #7f8c8d;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>수료증 템플릿 선택</h1>
+        <p class="subtitle">귀하의 목적에 맞는 수료증 스타일을 선택하세요</p>
+        
+        <div class="template-grid">
+            <div class="template-card" onclick="window.open('certificate.html', '_blank')">
+                <div class="template-preview classic">수료증</div>
+                <div class="template-info">
+                    <h3 class="template-title">클래식 스타일</h3>
+                    <p class="template-description">
+                        전통적이고 격식있는 디자인으로 공식적인 자리에 적합합니다.
+                    </p>
+                    <ul class="template-features">
+                        <li>고급스러운 금색 테두리</li>
+                        <li>전통적인 서체 사용</li>
+                        <li>공식 직인 디자인</li>
+                        <li>워터마크 효과</li>
+                    </ul>
+                    <a href="certificate.html" target="_blank" class="view-button">미리보기</a>
+                </div>
+            </div>
+            
+            <div class="template-card" onclick="window.open('certificate-modern.html', '_blank')">
+                <div class="template-preview modern">수료증</div>
+                <div class="template-info">
+                    <h3 class="template-title">모던 스타일</h3>
+                    <p class="template-description">
+                        현대적이고 세련된 디자인으로 IT 기업이나 스타트업에 적합합니다.
+                    </p>
+                    <ul class="template-features">
+                        <li>그라데이션 색상</li>
+                        <li>미니멀한 레이아웃</li>
+                        <li>디지털 서명 스타일</li>
+                        <li>현대적인 타이포그래피</li>
+                    </ul>
+                    <a href="certificate-modern.html" target="_blank" class="view-button">미리보기</a>
+                </div>
+            </div>
+            
+            <div class="template-card" onclick="window.open('certificate-elegant.html', '_blank')">
+                <div class="template-preview elegant">修了證</div>
+                <div class="template-info">
+                    <h3 class="template-title">엘레강트 스타일</h3>
+                    <p class="template-description">
+                        동양적이고 우아한 디자인으로 전통 문화 관련 과정에 적합합니다.
+                    </p>
+                    <ul class="template-features">
+                        <li>한자 타이틀 포함</li>
+                        <li>전통 문양 장식</li>
+                        <li>손글씨 서명 효과</li>
+                        <li>고전적인 색상 구성</li>
+                    </ul>
+                    <a href="certificate-elegant.html" target="_blank" class="view-button">미리보기</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h2>사용 방법</h2>
+            <p>수료증을 사용하려면 다음 단계를 따르세요:</p>
+            <ol>
+                <li>위의 세 가지 스타일 중 원하는 수료증을 선택하여 미리보기를 확인하세요.</li>
+                <li>선택한 수료증 페이지에서 마우스 우클릭 → "다른 이름으로 저장"을 선택하여 HTML 파일을 저장하세요.</li>
+                <li>저장한 HTML 파일을 텍스트 에디터로 열어 수료자 정보를 수정하세요.</li>
+                <li>브라우저에서 파일을 열고 Ctrl+P (또는 Cmd+P)를 눌러 인쇄하거나 PDF로 저장하세요.</li>
+                <li>인쇄 시 "배경 그래픽" 옵션을 체크하여 모든 디자인 요소가 포함되도록 하세요.</li>
+            </ol>
+        </div>
+    </div>
+</body>
+</html>
