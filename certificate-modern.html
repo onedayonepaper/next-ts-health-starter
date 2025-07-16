@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>수료증 - 모던 스타일</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .certificate-container {
+            background: white;
+            width: 900px;
+            height: 650px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .header-gradient {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 150px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            opacity: 0.1;
+        }
+        
+        .certificate-content {
+            padding: 80px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .logo-section {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            text-align: center;
+            line-height: 1.2;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .title {
+            font-size: 56px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            letter-spacing: 8px;
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            color: #8b92a3;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+        
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .recipient-name {
+            text-align: center;
+            font-size: 36px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 50px;
+            position: relative;
+        }
+        
+        .recipient-name::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+        }
+        
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .detail-item {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .detail-label {
+            font-size: 14px;
+            color: #718096;
+            margin-bottom: 5px;
+            font-weight: 400;
+        }
+        
+        .detail-value {
+            font-size: 18px;
+            color: #2d3748;
+            font-weight: 700;
+        }
+        
+        .certificate-message {
+            text-align: center;
+            font-size: 20px;
+            line-height: 1.8;
+            color: #4a5568;
+            margin: 40px 0;
+        }
+        
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        
+        .date-section {
+            text-align: left;
+        }
+        
+        .date-label {
+            font-size: 14px;
+            color: #718096;
+            margin-bottom: 5px;
+        }
+        
+        .date-value {
+            font-size: 18px;
+            color: #2d3748;
+            font-weight: 700;
+        }
+        
+        .issuer-section {
+            text-align: right;
+        }
+        
+        .issuer-title {
+            font-size: 16px;
+            color: #718096;
+            margin-bottom: 10px;
+        }
+        
+        .issuer-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+        
+        .digital-signature {
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .pattern-overlay {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 300px;
+            height: 300px;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23667eea' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .certificate-container {
+                box-shadow: none;
+                width: 100%;
+                height: 100vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="certificate-container">
+        <div class="header-gradient"></div>
+        <div class="pattern-overlay"></div>
+        <div class="logo-section">
+            ○○<br>협회
+        </div>
+        
+        <div class="certificate-content">
+            <div class="header">
+                <h1 class="title">수료증</h1>
+                <p class="subtitle">CERTIFICATE OF COMPLETION</p>
+            </div>
+            
+            <div class="main-content">
+                <h2 class="recipient-name">김영희</h2>
+                
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <div class="detail-label">소속</div>
+                        <div class="detail-value">(주)○○닷컴</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">과정명</div>
+                        <div class="detail-value">안전관리자 업무능력개발</div>
+                    </div>
+                </div>
+                
+                <div class="certificate-message">
+                    위 사람은 ○○협회 ○○교육훈련과정을<br>
+                    우수한 성적으로 수료하였음을 증명합니다.
+                </div>
+            </div>
+            
+            <div class="footer">
+                <div class="date-section">
+                    <div class="date-label">수료일자</div>
+                    <div class="date-value">2024년 12월 30일</div>
+                </div>
+                
+                <div class="issuer-section">
+                    <div class="issuer-title">○○협회 회장</div>
+                    <div class="issuer-name">김 철 수</div>
+                    <div class="digital-signature">디지털 서명됨</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
